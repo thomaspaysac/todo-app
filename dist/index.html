@@ -8,6 +8,32 @@
   <script src="./main.js" defer></script>
 </head>
 <body>
-  <h1>Ceci est un test</h1>
+  <div class="form-container">
+    <form id="add-task_form" autocomplete="off">
+      <div class="input-group">
+        <label for="tasklist">Tasklist :</label>
+        <input type="text" name="taskList" id="taskList">
+      </div>
+      <div class="input-group">
+        <label for="task-title">Title : </label>
+        <input type="text" name="taskTitle" id="taskTitle">
+      </div>
+      <div class="input-group">
+        <label for="task-desc">Description : </label>
+        <input type="text" name="taskDescription" id="taskDescription">
+      </div>
+      <div class="input-group">
+          <label for="task-deadline">Deadline :</label>
+          <input type="text" name="taskDeadline" id="taskDeadline">
+      </div>
+      <div class="input-group">
+        <label for="task-priority">Priority :</label>
+        <input type="text" name="taskPriority" id="taskPriority">
+    </div>
+      <input id="task-submit__btn" type="submit" value="Create task">
+    </form>
+  </div>
+  <div id="tasklist-container"></div>
+  <button id="superbutton">Click</button>
 </body>
 </html>
