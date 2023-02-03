@@ -4,7 +4,9 @@ import { format, formatDistanceToNow } from 'date-fns';
 const NEW_TASK_FORM = document.getElementById('add-task_form');
 const TASKLIST_CONTAINER = document.getElementById('tasklist-container');
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
-let latestTask;
+const taskListsContainer = [];
+let newTask;
+
 
 // Factory function for creating new single tasks
 const Task = (title, description, deadline, priority, tasklist) => {
@@ -18,7 +20,7 @@ const Tasklist = (title, description) => {
 };
 
 
-// Get tasks infos from form, put it in latestTask variable for use in other functions
+// Get tasks infos from form, put it in newTask variable for use in other functions
 //
 const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -29,13 +31,27 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   const description = taskData.taskDescription;
   const deadline = taskData.taskDeadline;
   const priority = taskData.taskPriority;
-  latestTask = Task(title, description, deadline, priority, tasklist);
+  newTask = Task(title, description, deadline, priority, tasklist);
+  addTaskToTaskList(newTask);
   });
 })();
 
-// Add the latestTask to its task list if it exist, create one if it doesnt
+// Add the newTask to its task list if it exist, create one if it doesnt
+const addTaskToTaskList = (newTask) => {
+  //If the tasklist title is already in the database, this will return the tasklist object. Otherwise, returns undefined
+  const targetTaskList = taskListsContainer.find(({ title }) => title === newTask.tasklist);
+  if (targetTaskList === undefined) { // i.e. no tasklist with this name exists yet
+    console.log('This is a new tasklist');
+    const newTaskList = Tasklist(newTask.tasklist, '');
+    taskListsContainer.push(newTaskList);
+    (newTaskList.content).push(newTask);
+  } else {
+    console.log('Adding task to the existing tasklist...');
+    (targetTaskList.content).push(newTask);
+  }
+};
 
-// If the latestTask doesn't go in a tasklist, add it directly to the DOM
+// If the newTask doesn't go in a tasklist, add it directly to the DOM
 // Otherwise, add the tasklist then the task to the DOM
 
 // When clicking on a takslist name, update the display with the list of tasks
@@ -45,6 +61,9 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
 
 
 // Test purpose
+
+const testTaskList = Tasklist('Test tasklist', 'Test desc');
+taskListsContainer.push(testTaskList);
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(latestTask);
+  console.log(taskListsContainer);
 });
