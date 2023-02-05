@@ -1,9 +1,8 @@
 import './style.css';
-import { createTasklistContainer } from './dom-createjs';
+import { createTasklistContainer, createTask } from './dom-create.js';
 import { format, formatDistanceToNow } from 'date-fns';
 
 const NEW_TASK_FORM = document.getElementById('add-task_form');
-const TASKLIST_CONTAINER = document.getElementById('tasklist-container');
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 const taskListsContainer = [];
 let newTask;
@@ -46,6 +45,8 @@ const addTaskToTaskList = (newTask) => {
     const newTaskList = Tasklist(newTask.tasklist, '');
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
+    createTasklistContainer(newTask.tasklist);
+    createTask(newTask.title);
   } else {
     console.log('Adding task to the existing tasklist...');
     (targetTaskList.content).push(newTask);
@@ -67,5 +68,5 @@ const addTaskToTaskList = (newTask) => {
 const testTaskList = Tasklist('Test tasklist', 'Test desc');
 taskListsContainer.push(testTaskList);
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(taskListsContainer);
+  createTasklistContainer(newTask);
 });

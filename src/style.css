@@ -4,7 +4,9 @@
   font-family: 'Ubuntu', sans-serif; }
 
 .form-container {
-  display: none; }
+  position: fixed;
+  width: 400px;
+  height: auto; }
 
 body {
   height: 100vh;
