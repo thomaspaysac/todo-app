@@ -57,6 +57,7 @@ main {
   padding: 20px;
   background-color: #666666;
   color: #eeeeee;
+  overflow-y: scroll;
 }
 
 .sidebar-category {
@@ -83,12 +84,13 @@ main {
   color: #aaaaaa;
   font-size: 0.9rem;
   font-style: italic;
-
-    li {
+  
+  li {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
+
+  }
 }
 
 .content__container {

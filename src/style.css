@@ -44,7 +44,8 @@ main {
   width: 300px;
   padding: 20px;
   background-color: #666666;
-  color: #eeeeee; }
+  color: #eeeeee;
+  overflow-y: scroll; }
 
 .sidebar-category {
   margin-bottom: 32px; }
