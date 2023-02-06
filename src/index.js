@@ -45,11 +45,11 @@ const addTaskToTaskList = (newTask) => {
     const newTaskList = Tasklist(newTask.tasklist, '');
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
-    createTasklistContainer(newTask.tasklist);
-    createTask(newTask.title);
+    createTasklistContainer(taskListsContainer);
   } else {
     console.log('Adding task to the existing tasklist...');
     (targetTaskList.content).push(newTask);
+    createTasklistContainer(taskListsContainer);
   }
 };
 
@@ -65,8 +65,6 @@ const addTaskToTaskList = (newTask) => {
 
 // Test purpose
 
-const testTaskList = Tasklist('Test tasklist', 'Test desc');
-taskListsContainer.push(testTaskList);
 TEST_BUTTON.addEventListener('click', () => {
-  createTasklistContainer(newTask);
+    console.log(taskListsContainer);
 });

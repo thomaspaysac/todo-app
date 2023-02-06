@@ -32,17 +32,19 @@
       <h2>Tasklists</h2>
       <div class="tasklists-category__container">
         <ul class="sidebar-tasklists">
-          <li class="sidebar-tasklist">Maison
+          <li class="sidebar-tasklist">
+            <div class="tasklist-title">Maison</div>
             <ul class="tasklist-subtasks">
-              <li><input type="checkbox" name="" id="">Faire la vaisselle</li>
-              <li><input type="checkbox" name="" id="">Passer l'aspirateur</li>
-              <li><input type="checkbox" name="" id="">Ceci est une tâche très très longue, trop longue pour ce container</li>
+              <li>Faire la vaisselle</li>
+              <li>Passer l'aspirateur</li>
+              <li>Ceci est une tâche très très longue, trop longue pour ce container</li>
             </ul>
           </li>
-          <li class="sidebar-tasklist">Travail
+          <li class="sidebar-tasklist">
+            <div class="tasklist-title">Travail</div>
             <ul class="tasklist-subtasks">
-              <li><input type="checkbox" name="" id="">Bricolage</li>
-              <li><input type="checkbox" name="" id="">Ecrire dossiers</li>
+              <li>Bricolage</li>
+              <li>Ecrire dossiers</li>
             </ul>
           </li>
         </ul>
@@ -57,7 +59,7 @@
     <form id="add-task_form" autocomplete="off">
       <div class="input-group">
         <label for="tasklist">Tasklist :</label>
-        <input type="text" name="taskList" id="taskList">
+        <input type="text" name="taskList" id="taskList" value="Various tasks">
       </div>
       <div class="input-group">
         <label for="task-title">Title : </label>
@@ -72,8 +74,8 @@
           <input type="text" name="taskDeadline" id="taskDeadline">
       </div>
       <div class="input-group">
-        <label for="task-priority">Priority :</label>
-        <input type="text" name="taskPriority" id="taskPriority">
+        <label for="task-priority">Priority (1 - 3) :</label>
+        <input type="number" name="taskPriority" id="taskPriority" min="1" max="3">
     </div>
       <input id="task-submit__btn" type="submit" value="Create task">
     </form>
