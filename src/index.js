@@ -1,5 +1,5 @@
 import './style.css';
-import { createTasklistContainer, createTask } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails } from './dom-create.js';
 import { format, formatDistanceToNow } from 'date-fns';
 
 const NEW_TASK_FORM = document.getElementById('add-task_form');
@@ -46,10 +46,12 @@ const addTaskToTaskList = (newTask) => {
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
     createTasklistContainer(taskListsContainer);
+    displayController();
   } else {
     console.log('Adding task to the existing tasklist...');
     (targetTaskList.content).push(newTask);
     createTasklistContainer(taskListsContainer);
+    displayController();
   }
 };
 
@@ -58,6 +60,20 @@ const addTaskToTaskList = (newTask) => {
 
 
 // When clicking on a takslist name, update the display with the list of tasks
+const displayController = () => {
+  const tasklist_block = document.getElementsByClassName('sidebar-tasklist');
+  const tasklist = document.getElementsByClassName('tasklist-title');
+  for (let i = 0; i < tasklist.length; i++) {
+    tasklist_block[i].addEventListener('click', () => {
+       // Get the name of the clicked tasklist
+      const clicked_task = tasklist[i].textContent;
+      // Use the takslist name to find the tasklist in the taskListsContainer
+      const targetTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
+      loadTasklistDetails(targetTaskList);
+    });
+  }
+};
+
 
 // When clicking on a task name, update the display with task infos
 
