@@ -26,6 +26,9 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   e.preventDefault();
   const formData = new FormData(NEW_TASK_FORM);
   const taskData = Object.fromEntries(formData);
+  if (taskData.taskList === '') {
+    taskData.taskList = 'General tasks'; // Create a general takslist to put single tasks into
+  }
   const tasklist = taskData.taskList;
   const title = taskData.taskTitle;
   const description = taskData.taskDescription;
@@ -45,6 +48,7 @@ const addTaskToTaskList = (newTask) => {
     const newTaskList = Tasklist(newTask.tasklist, '');
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
+    newTaskList.description = 'There is no description yet...';
     createTasklistContainer(taskListsContainer);
     displayController();
   } else {

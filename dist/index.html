@@ -9,7 +9,7 @@
 </head>
 <body>
   <header>
-    <div class="logo__container"><h1>toodoo.</h1></div>
+    <div class="logo__container"><h1>toodoo<span style="color:#d4d0af">.</style></h1></div>
     <div class="header__container">
       <a href="">Log in</a>
       <a href="">Create an account</a>
@@ -18,7 +18,7 @@
 <main>
   <aside class="sidebar__container">
     <div class="sidebar-category">
-      <h2>Deadline</h2>
+      <h2>Filter by deadline</h2>
       <div class="deadline-category__container">
         <ul>
           <li>Today</li>
@@ -59,19 +59,19 @@
     <form id="add-task_form" autocomplete="off">
       <div class="input-group">
         <label for="tasklist">Tasklist :</label>
-        <input type="text" name="taskList" id="taskList" value="Various tasks">
+        <input type="text" name="taskList" id="taskList" autocomplete="on">
       </div>
       <div class="input-group">
         <label for="task-title">Title : </label>
-        <input type="text" name="taskTitle" id="taskTitle">
+        <input type="text" name="taskTitle" id="taskTitle" required>
       </div>
       <div class="input-group">
         <label for="task-desc">Description : </label>
-        <input type="text" name="taskDescription" id="taskDescription">
+        <textarea name="taskDescription" id="taskDescription"></textarea>
       </div>
       <div class="input-group">
           <label for="task-deadline">Deadline :</label>
-          <input type="text" name="taskDeadline" id="taskDeadline">
+          <input type="date" name="taskDeadline" id="taskDeadline">
       </div>
       <div class="input-group">
         <label for="task-priority">Priority (1 - 3) :</label>

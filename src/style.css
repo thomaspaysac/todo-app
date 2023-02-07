@@ -14,7 +14,7 @@ body {
 header {
   display: flex;
   height: 10vh;
-  background-color: #555555; }
+  background-color: #344B52; }
 
 main {
   display: flex;
@@ -28,7 +28,7 @@ main {
     font-family: 'Gamja Flower';
     margin: 0 0 0 20px;
     font-size: 3.5rem;
-    color: #eeeeee; }
+    color: #efefef; }
 
 .header__container {
   width: 85%;
@@ -38,14 +38,14 @@ main {
   gap: 32px;
   padding-right: 20px; }
   .header__container a {
-    color: #eeeeee;
+    color: #efefef;
     text-decoration: none; }
 
 .sidebar__container {
   width: 300px;
   padding: 20px;
-  background-color: #666666;
-  color: #eeeeee;
+  background-color: #718186;
+  color: #efefef;
   overflow-y: scroll; }
 
 .sidebar-category {
@@ -60,10 +60,16 @@ main {
     list-style-type: none; }
 
 .sidebar-tasklist {
-  margin-bottom: 8px; }
+  margin-bottom: 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+  .sidebar-tasklist:hover, .sidebar-tasklist:active {
+    background-color: #ccd2d479; }
 
 .tasklist-subtasks {
-  color: #aaaaaa;
+  color: #cccccc;
   font-size: 0.9rem;
   font-style: italic; }
   .tasklist-subtasks li {
@@ -72,9 +78,11 @@ main {
     text-overflow: ellipsis; }
 
 .content__container {
-  background-color: #eeeeee;
+  background-color: #efefef;
+  color: #232323;
   width: 100%;
-  padding: 20px; }
+  padding: 20px;
+  overflow-y: scroll; }
 
 .content__tasklist-header {
   display: flex;
@@ -108,11 +116,16 @@ main {
   color: #aaaaaa;
   display: grid;
   grid-template-columns: 28px 6fr 2fr 1fr 60px;
-  align-items: center; }
+  align-items: center;
+  font-size: 0.9rem; }
+  .data_legends :not(:nth-child(2)) {
+    justify-self: center; }
 
 .single-task__container {
   margin: 16px 0;
   border-bottom: 1px solid #aaaaaa; }
+  .single-task__container:hover, .single-task__container:active {
+    background-color: #eeecdf; }
 
 .single-task__datas {
   display: grid;
@@ -125,6 +138,8 @@ main {
     margin: 0;
     height: 15px;
     justify-self: start; }
+  .single-task__datas :not(:nth-child(2)) {
+    justify-self: center; }
 
 .single-task__description {
   color: #aaaaaa;
