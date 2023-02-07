@@ -4,6 +4,9 @@ import { format, formatDistanceToNow } from 'date-fns';
 
 const NEW_TASK_FORM = document.getElementById('add-task_form');
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
+const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
+const BACKDROP = document.querySelector('.backdrop');
+const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const taskListsContainer = [];
 let newTask;
 
@@ -19,6 +22,25 @@ const Tasklist = (title, description) => {
   return { title, description, content };
 };
 
+// Modals
+const openModal = (modal) => {
+  BACKDROP.style.display = 'block';
+  modal.style.display = 'block';
+};
+
+const closeModal = () => {
+    BACKDROP.style.display = 'none';
+    NEW_TASK_MODAL.style.display = 'none';
+};
+
+BACKDROP.addEventListener('click', () => {
+  BACKDROP.style.display = 'none';
+  NEW_TASK_MODAL.style.display = 'none';
+});
+
+NEW_TASK_BUTTON.addEventListener('click', () => {
+  openModal(NEW_TASK_MODAL);
+});
 
 // Get tasks infos from form, put it in newTask variable for use in other functions
 //
@@ -36,6 +58,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   const priority = taskData.taskPriority;
   newTask = Task(title, description, deadline, priority, tasklist);
   addTaskToTaskList(newTask);
+  closeModal();
   });
 })();
 
@@ -59,10 +82,6 @@ const addTaskToTaskList = (newTask) => {
   }
 };
 
-// If the newTask doesn't go in a tasklist, add it directly to the DOM
-// Otherwise, add the tasklist then the task to the DOM
-
-
 // When clicking on a takslist name, update the display with the list of tasks
 const displayController = () => {
   const tasklist_block = document.getElementsByClassName('sidebar-tasklist');
@@ -77,10 +96,6 @@ const displayController = () => {
     });
   }
 };
-
-
-// When clicking on a task name, update the display with task infos
-
 
 
 // Test purpose

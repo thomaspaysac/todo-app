@@ -8,20 +8,14 @@ $colors: (main: #344B52, main-medium: #718186, main-light: #ccd2d4, main-white: 
   font-family: 'Ubuntu', sans-serif;
 }
 
-.form-container {
-  width: 400px;
-  height: auto;
-}
-
 body {
   height: 100vh;
   margin:0;
 }
 
-header {
-  display: flex;
-  height: 10vh;
-  background-color: map-get($colors, main);
+.form-container {
+  width: 400px;
+  height: auto;
 }
 
 main {
@@ -29,11 +23,88 @@ main {
   height: 90vh;
 }
 
+// Modals
+.add-task__modal {
+  display: none;
+  background-color: map-get($colors, main-light);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 32px;
+  border: 4px solid map-get($colors, main);
+  border-radius: 5px;
+  z-index: 3;
+
+  h2 {
+    color: map-get($colors, main-black);
+    text-align: center;
+    margin: 0 0 16px 0;
+  }
+}
+
+.backdrop {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: #7181869d;
+  z-index: 2;
+}
+
+// Forms
+#add-task_form {
+  display: flex;
+  display: flex;
+  flex-direction: column;
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin: 8px 0;
+  }
+
+  textarea {
+    resize: vertical;
+    max-height:33vh;
+  }
+
+  input[type="submit"] {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    background-color: map-get($colors, accent);
+    padding: 8px;
+    margin: auto;
+    margin-top: 16px;
+    border: 3px solid map-get($colors, main);
+    border-radius: 10px;
+    color: map-get($colors, main-black);
+
+    &:hover {
+      background-color: map-get($colors, main);
+      color: map-get($colors, main-white);
+      cursor: pointer;
+    }
+  
+    &:active {
+      transform: translateY(2px);
+    }
+  }
+}
+
 // Header
+header {
+  display: flex;
+  height: 10vh;
+  background-color: map-get($colors, main);
+}
+
 .logo__container {
   width: 15%;
   display: flex;
   align-items: center;
+  cursor: default;
 
   h1 {
   font-family: 'Gamja Flower';
@@ -64,6 +135,30 @@ main {
   background-color: map-get($colors, main-medium);
   color: map-get($colors, main-white);
   overflow-y: scroll;
+}
+
+.new-task__button {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  width: 100%;
+  background-color: map-get($colors, accent);
+  padding: 0.5rem;
+  margin-bottom: 24px;
+  border: 3px solid map-get($colors, main);
+  border-radius: 10px;
+  box-shadow: 3px 3px 5px #23232377;
+
+  &:hover {
+    background-color: map-get($colors, main);
+    color: map-get($colors, main-white);
+    border-color: map-get($colors, accent-light);
+    cursor: pointer;
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
 }
 
 .sidebar-category {
