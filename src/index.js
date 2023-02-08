@@ -10,6 +10,10 @@ const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const taskListsContainer = [];
 let newTask;
 
+// General functions
+const capitalizeString = (string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 // Factory function for creating new single tasks
 const Task = (title, description, deadline, priority, tasklist) => {
@@ -51,8 +55,8 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   if (taskData.taskList === '') {
     taskData.taskList = 'General tasks'; // Create a general takslist to put single tasks into
   }
-  const tasklist = taskData.taskList;
-  const title = taskData.taskTitle;
+  const tasklist = capitalizeString(taskData.taskList);
+  const title = capitalizeString(taskData.taskTitle);
   const description = taskData.taskDescription;
   const deadline = taskData.taskDeadline;
   const priority = taskData.taskPriority;
