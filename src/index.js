@@ -1,14 +1,20 @@
 import './style.css';
-import { createTasklistContainer, loadTasklistDetails } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer } from './dom-create.js';
 import { format, formatDistanceToNow } from 'date-fns';
 
+// Global variables
+const taskListsContainer = [];
+let newTask;
+
+
+// DOM Elements
 const NEW_TASK_FORM = document.getElementById('add-task_form');
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
-const taskListsContainer = [];
-let newTask;
+const REMOVE_TASKLIST_BUTTON = document.querySelector('.remove-tasklist__button');
+
 
 // General functions
 const capitalizeString = (string) => {
@@ -46,8 +52,9 @@ NEW_TASK_BUTTON.addEventListener('click', () => {
   openModal(NEW_TASK_MODAL);
 });
 
-// Get tasks infos from form, put it in newTask variable for use in other functions
+// TASKS AND TASKLISTS ACTIONS: Create, Remove, Edit
 //
+// Get tasks infos from form, put it in newTask variable for use in other functions
 const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   e.preventDefault();
   const formData = new FormData(NEW_TASK_FORM);
@@ -86,6 +93,30 @@ const addTaskToTaskList = (newTask) => {
   }
 };
 
+const removeTasklist = () => {
+  const REMOVE_TASKLIST_BUTTON = document.querySelector('.remove-tasklist__button');
+
+  REMOVE_TASKLIST_BUTTON.addEventListener('click', () => {
+    const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
+    const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
+    let removeConfirmation = prompt('Do you really want to remove this tasklist?');
+    if (removeConfirmation.toLowerCase() === 'yes') {
+      console.log('Removing tasklist...');
+      for (let i = 0; i < taskListsContainer.length; i++) { 
+        if (taskListsContainer[i] === targetTaskList) { 
+          taskListsContainer.splice(i, 1);
+        }
+      }
+      createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+      displayController(); // Reload the click actions on sidebar tasklists
+      resetContentContainer(); // Empty the content container
+    } else {
+      return;
+    }
+  }
+);
+};
+
 // When clicking on a takslist name, update the display with the list of tasks
 const displayController = () => {
   const tasklist_block = document.getElementsByClassName('sidebar-tasklist');
@@ -95,8 +126,9 @@ const displayController = () => {
        // Get the name of the clicked tasklist
       const clicked_task = tasklist[i].textContent;
       // Use the takslist name to find the tasklist in the taskListsContainer
-      const targetTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
-      loadTasklistDetails(targetTaskList);
+      const clickedTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
+      loadTasklistDetails(clickedTaskList);
+      removeTasklist();
     });
   }
 };

@@ -94,24 +94,10 @@ const loadTasklistDetails = (tasklist) => {
     single_task_description.textContent = task.description;
     single_task_container.appendChild(single_task_description);
   });
-  content_tasklist_header.style.opacity = 1;
 };
 
-/*const loadTasklistDetails = (tasklist) => {
+const resetContentContainer = () => {
   content_container.textContent = '';
-  const tasklist_title = document.createElement('h2');
-  tasklist_title.textContent = tasklist.title;
-  content_container.appendChild(tasklist_title);
-  (tasklist.content).forEach(tsk => {
-    const singleTaskContainer = document.createElement('div');
-    content_container.appendChild(singleTaskContainer);
-    const taskTitle = document.createElement('h3');
-    taskTitle.textContent = tsk.title;
-    singleTaskContainer.appendChild(taskTitle);
-    const taskDesc = document.createElement('div');
-    taskDesc.textContent = tsk.description;
-    singleTaskContainer.appendChild(taskDesc);
-  });
-};*/
+};
 
-export { createTasklistContainer, loadTasklistDetails };
+export { createTasklistContainer, loadTasklistDetails, resetContentContainer };
