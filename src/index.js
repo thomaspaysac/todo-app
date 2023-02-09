@@ -128,10 +128,10 @@ const removeTask = () => {
       targetTaskList.content.splice(i, 1);
       loadTasklistDetails(targetTaskList);
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-      removeTask();
+      removeTask(); // Recharge remove function for remaining tasks
+      removeTasklist(); // Recharge remove tasklist function
       displayController();
     });
-    //displayController(); // Reload the click actions on sidebar tasklists
   }
 };
 
