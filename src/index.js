@@ -13,7 +13,7 @@ const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
-const REMOVE_TASKLIST_BUTTON = document.querySelector('.remove-tasklist__button');
+const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 
 
 // General functions
@@ -41,12 +41,10 @@ const openModal = (modal) => {
 const closeModal = () => {
     BACKDROP.style.display = 'none';
     NEW_TASK_MODAL.style.display = 'none';
+    REMOVE_TASKLIST_MODAL.style.display = 'none';
 };
 
-BACKDROP.addEventListener('click', () => {
-  BACKDROP.style.display = 'none';
-  NEW_TASK_MODAL.style.display = 'none';
-});
+BACKDROP.addEventListener('click', () => closeModal());
 
 NEW_TASK_BUTTON.addEventListener('click', () => {
   openModal(NEW_TASK_MODAL);
@@ -93,15 +91,18 @@ const addTaskToTaskList = (newTask) => {
   }
 };
 
+// Remove a tasklist
 const removeTasklist = () => {
   const REMOVE_TASKLIST_BUTTON = document.querySelector('.remove-tasklist__button');
-
+  const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
+  const REMOVE_CANCEL_BTN = document.querySelector('.remove-cancel__button');
+  const REMOVE_CONFIRM_BTN = document.querySelector('.remove-confirm__button');
   REMOVE_TASKLIST_BUTTON.addEventListener('click', () => {
-    const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
+    openModal(REMOVE_TASKLIST_MODAL);
+    const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
     const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
-    let removeConfirmation = prompt('Do you really want to remove this tasklist?');
-    if (removeConfirmation.toLowerCase() === 'yes') {
-      console.log('Removing tasklist...');
+    REMOVE_CANCEL_BTN.addEventListener('click', () => closeModal());
+    REMOVE_CONFIRM_BTN.addEventListener('click', () => {
       for (let i = 0; i < taskListsContainer.length; i++) { 
         if (taskListsContainer[i] === targetTaskList) { 
           taskListsContainer.splice(i, 1);
@@ -110,11 +111,28 @@ const removeTasklist = () => {
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
       displayController(); // Reload the click actions on sidebar tasklists
       resetContentContainer(); // Empty the content container
-    } else {
-      return;
-    }
+      closeModal();
+    });
   }
 );
+};
+
+// Remove a single task from the tasklist display
+const removeTask = () => {
+  const REMOVE_TASK_BTN = document.querySelectorAll('.remove-single-task__button');
+  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
+  const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
+  console.log(REMOVE_TASK_BTN);
+  for (let i = 0; i < REMOVE_TASK_BTN.length; i ++) {
+    REMOVE_TASK_BTN[i].addEventListener('click', () => {
+      targetTaskList.content.splice(i, 1);
+      loadTasklistDetails(targetTaskList);
+      createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+      removeTask();
+      displayController();
+    });
+    //displayController(); // Reload the click actions on sidebar tasklists
+  }
 };
 
 // When clicking on a takslist name, update the display with the list of tasks
@@ -123,12 +141,13 @@ const displayController = () => {
   const tasklist = document.getElementsByClassName('tasklist-title');
   for (let i = 0; i < tasklist.length; i++) {
     tasklist_block[i].addEventListener('click', () => {
-       // Get the name of the clicked tasklist
+      // Get the name of the clicked tasklist
       const clicked_task = tasklist[i].textContent;
       // Use the takslist name to find the tasklist in the taskListsContainer
       const clickedTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
       loadTasklistDetails(clickedTaskList);
       removeTasklist();
+      removeTask();
     });
   }
 };
