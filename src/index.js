@@ -163,11 +163,11 @@ const editTasklist = () => {
 
 // Edit a single task
 const editTask = () => {
-  // Task title
-  const single_task_title = document.querySelectorAll('.single-task__title');
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
   const targetTask = targetTaskList.content;
+  // Task title
+  const single_task_title = document.querySelectorAll('.single-task__title');
   for (let i = 0; i < single_task_title.length; i ++) {
     single_task_title[i].addEventListener('click', () => {
       single_task_title[i].contentEditable = 'true';
@@ -179,16 +179,34 @@ const editTask = () => {
     });
   }
 
-  // Task deadline
+  // Task description
+  const single_task_description = document.querySelectorAll('.single-task__description');
+  for (let i = 0; i < single_task_description.length; i++) {
+    single_task_description[i].addEventListener('click', () => {
+      single_task_description[i].contentEditable = 'true';
+    });
+    single_task_description[i].addEventListener('blur', () => {
+      single_task_description.contentEditable = 'false';
+      targetTask[i].description = single_task_description[i].textContent;
+    });
+  }
+
+  // Task deadline   NOT WORKING
   const single_task_deadline = document.querySelectorAll('.single-task__deadline');
   const editableDeadline = document.createElement('input');
   editableDeadline.type = 'date';
   for (let i = 0; i < single_task_deadline.length; i++) {
     single_task_deadline[i].addEventListener('click', () => {
-      editableDeadline.value
+      editableDeadline.value = single_task_deadline[i].textContent;
       single_task_deadline[i].replaceWith(editableDeadline);
     });
+    editableDeadline.addEventListener('blur', () => {
+      editableDeadline.replaceWith(single_task_deadline[i]);
+      targetTask[i].deadline = editableDeadline.value;
+      loadTasklistDetails(targetTaskList);
+    });
   }
+    
   /*for (let i = 0; i < single_task_deadline.length; i++) {
     single_task_deadline[i].addEventListener('click', () => {
       single_task_deadline[i].contentEditable = 'true';
