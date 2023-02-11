@@ -75,6 +75,9 @@ main {
     color: #718186;
     border: 2px solid #718186; }
 
+.edit-task__modal {
+  display: none; }
+
 #add-task_form {
   display: flex;
   display: flex;

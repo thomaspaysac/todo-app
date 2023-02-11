@@ -101,6 +101,11 @@ main {
   }
 }
 
+.edit-task__modal {
+  display: none;
+}
+
+
 // Forms
 #add-task_form {
   display: flex;
