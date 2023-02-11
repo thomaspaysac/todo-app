@@ -75,9 +75,11 @@ const loadTasklistDetails = (tasklist) => {
     task_checkbox.type = "checkbox";
     single_task_datas.appendChild(task_checkbox);
     const single_task_title = document.createElement('h3');
+    single_task_title.classList.add('single-task__title');
     single_task_title.textContent = task.title;
     single_task_datas.appendChild(single_task_title);
     const single_task_deadline = document.createElement('div');
+    single_task_deadline.classList.add('single-task__deadline')
     single_task_deadline.textContent = task.deadline;
     single_task_datas.appendChild(single_task_deadline);
     const single_task_priority = document.createElement('div');

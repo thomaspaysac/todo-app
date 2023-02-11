@@ -73,7 +73,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
 
 // Add the newTask to its task list if it exist, create one if it doesnt
 const addTaskToTaskList = (newTask) => {
-  //If the tasklist title is already in the database, this will return the tasklist object. Otherwise, returns undefined
+  // If the tasklist title is already in the database, this will return the tasklist object. Otherwise, returns undefined
   const targetTaskList = taskListsContainer.find(({ title }) => title === newTask.tasklist);
   if (targetTaskList === undefined) { // i.e. no tasklist with this name exists yet
     console.log('This is a new tasklist');
@@ -122,19 +122,88 @@ const removeTask = () => {
   const REMOVE_TASK_BTN = document.querySelectorAll('.remove-single-task__button');
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
-  console.log(REMOVE_TASK_BTN);
   for (let i = 0; i < REMOVE_TASK_BTN.length; i ++) {
     REMOVE_TASK_BTN[i].addEventListener('click', () => {
       targetTaskList.content.splice(i, 1);
       loadTasklistDetails(targetTaskList);
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-      removeTask(); // Recharge remove function for remaining tasks
-      removeTasklist(); // Recharge remove tasklist function
+      removeTask(); // Reload remove function for remaining tasks
+      removeTasklist(); // Reload remove tasklist function
+      editTasklist(); // Reload edit function
       displayController();
     });
   }
 };
 
+// Edit a tasklist
+const editTasklist = () => {
+  const TASKLIST_NAME_ELEMENT = document.querySelector('.content__tasklist-title');
+  const TASKLIST_DESCRIPTION_ELEMENT = document.querySelector('.content__tasklist-description');
+  const targetTaskListName = TASKLIST_NAME_ELEMENT.textContent;
+  const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
+  TASKLIST_NAME_ELEMENT.addEventListener('click', () => { // Edit the tasklist title
+    TASKLIST_NAME_ELEMENT.contentEditable = "true";
+  });
+  TASKLIST_NAME_ELEMENT.addEventListener('blur', () => {
+    TASKLIST_NAME_ELEMENT.contentEditable = 'false';
+    targetTaskList.title = TASKLIST_NAME_ELEMENT.textContent; // Update tasklist in array
+    createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+    editTasklist(); // Reload edit function
+  });
+  TASKLIST_DESCRIPTION_ELEMENT.addEventListener('click', () => {
+    TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'true';
+  });
+  TASKLIST_DESCRIPTION_ELEMENT.addEventListener('blur', () => {
+    TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'false';
+    targetTaskList.description = TASKLIST_DESCRIPTION_ELEMENT.textContent;
+    createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+    editTasklist(); // Reload edit function
+  });
+};
+
+// Edit a single task
+const editTask = () => {
+  // Task title
+  const single_task_title = document.querySelectorAll('.single-task__title');
+  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
+  const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
+  const targetTask = targetTaskList.content;
+  for (let i = 0; i < single_task_title.length; i ++) {
+    single_task_title[i].addEventListener('click', () => {
+      single_task_title[i].contentEditable = 'true';
+    });
+    single_task_title[i].addEventListener('blur', () => {
+      single_task_title[i].contentEditable = 'false';
+      targetTask[i].title = single_task_title[i].textContent;
+      createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+    });
+  }
+
+  // Task deadline
+  const single_task_deadline = document.querySelectorAll('.single-task__deadline');
+  const editableDeadline = document.createElement('input');
+  editableDeadline.type = 'date';
+  for (let i = 0; i < single_task_deadline.length; i++) {
+    single_task_deadline[i].addEventListener('click', () => {
+      editableDeadline.value
+      single_task_deadline[i].replaceWith(editableDeadline);
+    });
+  }
+  /*for (let i = 0; i < single_task_deadline.length; i++) {
+    single_task_deadline[i].addEventListener('click', () => {
+      single_task_deadline[i].contentEditable = 'true';
+    });
+    single_task_deadline[i].addEventListener('blue', () => {
+      single_task_deadline[i].contentEditable = 'false';
+      targetTask[i].deadline = single_task_deadline[i].textContent;
+    });
+  }*/
+};
+
+
+
+
+// DOM ACTIONS
 // When clicking on a takslist name, update the display with the list of tasks
 const displayController = () => {
   const tasklist_block = document.getElementsByClassName('sidebar-tasklist');
@@ -148,6 +217,8 @@ const displayController = () => {
       loadTasklistDetails(clickedTaskList);
       removeTasklist();
       removeTask();
+      editTasklist();
+      editTask();
     });
   }
 };
