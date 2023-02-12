@@ -79,11 +79,23 @@ const loadTasklistDetails = (tasklist) => {
     single_task_title.textContent = task.title;
     single_task_datas.appendChild(single_task_title);
     const single_task_deadline = document.createElement('div');
-    single_task_deadline.classList.add('single-task__deadline')
-    single_task_deadline.textContent = task.deadline;
+    single_task_deadline.classList.add('single-task__deadline');
+    if (task.deadline === '') {
+      single_task_deadline.textContent = 'No deadline';
+    } else {
+      single_task_deadline.textContent = task.deadline;
+    }
     single_task_datas.appendChild(single_task_deadline);
     const single_task_priority = document.createElement('div');
-    single_task_priority.textContent = task.priority;
+    single_task_priority.classList.add('single-task__priority');
+    single_task_priority.textContent = '★'.repeat(task.priority);
+    if (task.priority === '1') {
+      single_task_priority.style.color = '#A7C7E7';
+    } else if (task.priority === '2') {
+      single_task_priority.style.color = '#77DD77';
+    } else if (task.priority === '3') {
+      single_task_priority.style.color = '#ff6961';
+    }
     single_task_datas.appendChild(single_task_priority);
     const edit_single_task_button = document.createElement('div');
     edit_single_task_button.classList.add('edit-single-task__button');

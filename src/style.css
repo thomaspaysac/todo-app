@@ -272,6 +272,9 @@ header {
   padding-left: 8px;
   margin: 8px 0; }
 
+.single-task__deadline {
+  color: #aaaaaa; }
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px; }

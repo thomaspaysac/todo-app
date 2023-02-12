@@ -230,7 +230,6 @@ const editTask = () => { // Live edit prototype
     single_task_title[i].addEventListener('blur', () => {
       single_task_title[i].contentEditable = 'false';
       targetTask[i].title = single_task_title[i].textContent;
-      console.log(targetTask[i]);
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
     });
   }
@@ -247,14 +246,13 @@ const editTask = () => { // Live edit prototype
     });
   }
 
-  // Edit task deadline !!! BUGGED !!!
+  // Edit task deadline
   const single_task_deadline = document.querySelectorAll('.single-task__deadline');
-  const editableDeadline = document.createElement('input');
-  editableDeadline.type = 'date';
-  for (let i = 0; i < single_task_deadline.length; i++) { // Find which task was clicked
+  for (let i = 0; i < single_task_deadline.length; i++) { 
+    const editableDeadline = document.createElement('input');
+    editableDeadline.type = 'date';
     single_task_deadline[i].addEventListener('click', () => {
       editableDeadline.value = single_task_deadline[i].textContent;
-      console.log(targetTask[i].deadline);
       single_task_deadline[i].replaceWith(editableDeadline);
     });
     editableDeadline.addEventListener('blur', () => {
