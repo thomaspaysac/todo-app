@@ -218,7 +218,9 @@ const editTask = () => { // Live edit prototype
   // Find the current tasklist name, then search for it in the taskslists array and return it
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
+  // Single tasks are stored as objects in the tasklist.content property. Create a shortcut to access the wanted task.
   const targetTask = targetTaskList.content;
+
   // Edit task title
   const single_task_title = document.querySelectorAll('.single-task__title');
   for (let i = 0; i < single_task_title.length; i ++) {
@@ -249,7 +251,7 @@ const editTask = () => { // Live edit prototype
   const single_task_deadline = document.querySelectorAll('.single-task__deadline');
   const editableDeadline = document.createElement('input');
   editableDeadline.type = 'date';
-  for (let i = 0; i < single_task_deadline.length; i++) { // Find which task 
+  for (let i = 0; i < single_task_deadline.length; i++) { // Find which task was clicked
     single_task_deadline[i].addEventListener('click', () => {
       editableDeadline.value = single_task_deadline[i].textContent;
       console.log(targetTask[i].deadline);
@@ -258,6 +260,7 @@ const editTask = () => { // Live edit prototype
     editableDeadline.addEventListener('blur', () => {
       editableDeadline.replaceWith(single_task_deadline[i]);
       targetTask[i].deadline = editableDeadline.value;
+      // Reload DOM elements to reflect changes and reload user actions functions
       loadTasklistDetails(targetTaskList);
       removeTasklist();
       removeTask();
