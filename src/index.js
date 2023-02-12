@@ -215,10 +215,11 @@ const editTask = () => {
 };*/
 
 const editTask = () => { // Live edit prototype
-  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
+  // Find the current tasklist name, then search for it in the taskslists array and return it
+  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
   const targetTask = targetTaskList.content;
-  // Task title
+  // Edit task title
   const single_task_title = document.querySelectorAll('.single-task__title');
   for (let i = 0; i < single_task_title.length; i ++) {
     single_task_title[i].addEventListener('click', () => {
@@ -232,7 +233,7 @@ const editTask = () => { // Live edit prototype
     });
   }
 
-  // Task description
+  // Edit task description
   const single_task_description = document.querySelectorAll('.single-task__description');
   for (let i = 0; i < single_task_description.length; i++) {
     single_task_description[i].addEventListener('click', () => {
@@ -244,11 +245,11 @@ const editTask = () => { // Live edit prototype
     });
   }
 
-  // Task deadline !!! BUGGED !!!
+  // Edit task deadline !!! BUGGED !!!
   const single_task_deadline = document.querySelectorAll('.single-task__deadline');
   const editableDeadline = document.createElement('input');
   editableDeadline.type = 'date';
-  for (let i = 0; i < single_task_deadline.length; i++) {
+  for (let i = 0; i < single_task_deadline.length; i++) { // Find which task 
     single_task_deadline[i].addEventListener('click', () => {
       editableDeadline.value = single_task_deadline[i].textContent;
       console.log(targetTask[i].deadline);
