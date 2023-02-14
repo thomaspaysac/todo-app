@@ -258,7 +258,8 @@ header {
   align-items: center; }
   .single-task__datas h3 {
     margin: 0;
-    margin-left: 8px; }
+    margin-left: 8px;
+    word-break: break-all; }
   .single-task__datas input[type="checkbox"] {
     margin: 0;
     height: 15px;
@@ -276,7 +277,8 @@ header {
   margin: 8px 0; }
 
 .single-task__deadline {
-  color: #aaaaaa; }
+  color: #aaaaaa;
+  font-size: 0.8rem; }
 
 /* width */
 ::-webkit-scrollbar {

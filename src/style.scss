@@ -346,6 +346,7 @@ header {
   h3 {
     margin: 0;
     margin-left: 8px;
+    word-break: break-all
   }
 
   input[type="checkbox"] {
@@ -371,6 +372,7 @@ header {
 
 .single-task__deadline {
   color: #aaaaaa;
+  font-size: 0.8rem;
 }
 
 // Custom scrollbars

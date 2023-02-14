@@ -1,6 +1,6 @@
 import './style.css';
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer } from './dom-create.js';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, parseISO, formatDistanceToNow, isBefore } from 'date-fns';
 
 // Global variables
 const taskListsContainer = [];
@@ -312,5 +312,12 @@ const displayController = () => {
 // Test purpose
 
 TEST_BUTTON.addEventListener('click', () => {
-    console.log(taskListsContainer);
+    //console.log(taskListsContainer);
+    const date = taskListsContainer[0].content[0].deadline;
+    //const comparison = 
+    if (isBefore(parseISO(date), new Date())) {
+      console.log(formatDistanceToNow(parseISO(date)) + ' ago');
+    } else {
+    console.log(formatDistanceToNow(parseISO(date)) + ' left');
+    }
 });

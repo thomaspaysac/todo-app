@@ -1,3 +1,5 @@
+import { format, parseISO, formatDistanceToNow, isBefore } from 'date-fns';
+
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
 
@@ -84,8 +86,10 @@ const loadTasklistDetails = (tasklist) => {
     single_task_deadline.classList.add('single-task__deadline');
     if (task.deadline === '') {
       single_task_deadline.textContent = '-';
+    } else if (isBefore(parseISO(task.deadline), new Date())) {
+      single_task_deadline.textContent = task.deadline + ' | ' + formatDistanceToNow(parseISO(task.deadline)) + ' ago';
     } else {
-      single_task_deadline.textContent = task.deadline;
+      single_task_deadline.textContent = task.deadline + ' | ' + formatDistanceToNow(parseISO(task.deadline)) + ' left';
     }
     single_task_datas.appendChild(single_task_deadline);
     const single_task_priority = document.createElement('div');
