@@ -68,13 +68,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
     taskData.taskDescription = 'No description.';
   }
   const description = taskData.taskDescription;
-  /*if (taskData.taskDeadline === '') {
-    taskData.taskDeadline = '-';
-  }*/
   const deadline = taskData.taskDeadline;
-  /*if (taskData.taskPriority === '') {
-    taskData.taskPriority = '-';
-  }*/
   const priority = taskData.taskPriority;
   newTask = Task(title, description, deadline, priority, tasklist);
   addTaskToTaskList(newTask);
@@ -87,16 +81,14 @@ const addTaskToTaskList = (newTask) => {
   // If the tasklist title is already in the database, this will return the tasklist object. Otherwise, returns undefined
   const targetTaskList = taskListsContainer.find(({ title }) => title === newTask.tasklist);
   if (targetTaskList === undefined) { // i.e. no tasklist with this name exists yet
-    console.log('This is a new tasklist');
-    const newTaskList = Tasklist(newTask.tasklist, '');
+    const newTaskList = Tasklist(newTask.tasklist, ''); // Create new tasklist
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
     newTaskList.description = 'There is no description yet...';
     createTasklistContainer(taskListsContainer);
     displayController();
   } else {
-    console.log('Adding task to the existing tasklist...');
-    (targetTaskList.content).push(newTask);
+    (targetTaskList.content).push(newTask); // Add to existing tasklist
     createTasklistContainer(taskListsContainer);
     displayController();
   }
@@ -141,6 +133,7 @@ const deleteTask = () => {
       deleteTask(); // Reload delete function for remaining tasks
       deleteTasklist(); // Reload delete tasklist function
       editTasklist(); // Reload edit function
+      editTask();
       displayController();
     });
   }
