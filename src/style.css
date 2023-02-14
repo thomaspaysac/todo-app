@@ -278,6 +278,10 @@ header {
 
 .single-task__deadline {
   color: #aaaaaa;
+  text-align: center; }
+
+.time-to-deadline {
+  color: #aaaaaa;
   font-size: 0.8rem; }
 
 /* width */

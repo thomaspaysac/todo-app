@@ -86,12 +86,20 @@ const loadTasklistDetails = (tasklist) => {
     single_task_deadline.classList.add('single-task__deadline');
     if (task.deadline === '') {
       single_task_deadline.textContent = '-';
-    } else if (isBefore(parseISO(task.deadline), new Date())) {
-      single_task_deadline.textContent = task.deadline + ' | ' + formatDistanceToNow(parseISO(task.deadline)) + ' ago';
     } else {
-      single_task_deadline.textContent = task.deadline + ' | ' + formatDistanceToNow(parseISO(task.deadline)) + ' left';
+      single_task_deadline.textContent = task.deadline;
     }
     single_task_datas.appendChild(single_task_deadline);
+    const timeToDeadline = document.createElement('div');
+    timeToDeadline.classList.add('time-to-deadline');
+    if (task.deadline === '') {
+      timeToDeadline.textContent = '-';
+    } else if (isBefore(parseISO(task.deadline), new Date())) {
+      timeToDeadline.textContent = formatDistanceToNow(parseISO(task.deadline)) + ' ago';
+    } else {
+      timeToDeadline.textContent = formatDistanceToNow(parseISO(task.deadline)) + ' left';
+    }
+    single_task_deadline.appendChild(timeToDeadline);
     const single_task_priority = document.createElement('div');
     single_task_priority.classList.add('single-task__priority');
     single_task_priority.textContent = '★'.repeat(task.priority);

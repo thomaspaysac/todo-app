@@ -313,11 +313,4 @@ const displayController = () => {
 
 TEST_BUTTON.addEventListener('click', () => {
     //console.log(taskListsContainer);
-    const date = taskListsContainer[0].content[0].deadline;
-    //const comparison = 
-    if (isBefore(parseISO(date), new Date())) {
-      console.log(formatDistanceToNow(parseISO(date)) + ' ago');
-    } else {
-    console.log(formatDistanceToNow(parseISO(date)) + ' left');
-    }
 });
