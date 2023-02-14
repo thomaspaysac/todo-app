@@ -8,10 +8,10 @@ let newTask;
 
 
 // DOM Elements
-const NEW_TASK_FORM = document.getElementById('add-task_form');
-const EDIT_TASK_FORM = document.getElementById('editTaskForm');
-
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
+const NEW_TASK_FORM = document.getElementById('add-task_form');
+const EDIT_TASK_FORM = document.getElementById('editTaskForm'); // Unused
+
 const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
@@ -52,7 +52,7 @@ NEW_TASK_BUTTON.addEventListener('click', () => {
   openModal(NEW_TASK_MODAL);
 });
 
-// TASKS AND TASKLISTS ACTIONS: Create, Remove, Edit
+// TASKS AND TASKLISTS ACTIONS: Create, Delete, Edit
 //
 // Get tasks infos from form, put it in newTask variable for use in other functions
 const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
@@ -68,13 +68,13 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
     taskData.taskDescription = 'No description.';
   }
   const description = taskData.taskDescription;
-  if (taskData.taskDeadline === '') {
-    taskData.taskDeadline = 'No deadline';
-  }
+  /*if (taskData.taskDeadline === '') {
+    taskData.taskDeadline = '-';
+  }*/
   const deadline = taskData.taskDeadline;
-  if (taskData.taskPriority === '') {
-    taskData.taskPriority = 3;
-  }
+  /*if (taskData.taskPriority === '') {
+    taskData.taskPriority = '-';
+  }*/
   const priority = taskData.taskPriority;
   newTask = Task(title, description, deadline, priority, tasklist);
   addTaskToTaskList(newTask);
@@ -102,8 +102,8 @@ const addTaskToTaskList = (newTask) => {
   }
 };
 
-// Remove a tasklist
-const removeTasklist = () => {
+// Delete a tasklist
+const deleteTasklist = () => {
   const REMOVE_TASKLIST_BUTTON = document.querySelector('.remove-tasklist__button');
   const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
   const REMOVE_CANCEL_BTN = document.querySelector('.remove-cancel__button');
@@ -128,8 +128,8 @@ const removeTasklist = () => {
 );
 };
 
-// Remove a single task from the tasklist display
-const removeTask = () => {
+// Delete a single task from the tasklist display
+const deleteTask = () => {
   const REMOVE_TASK_BTN = document.querySelectorAll('.remove-single-task__button');
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
@@ -138,8 +138,8 @@ const removeTask = () => {
       targetTaskList.content.splice(i, 1);
       loadTasklistDetails(targetTaskList);
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-      removeTask(); // Reload remove function for remaining tasks
-      removeTasklist(); // Reload remove tasklist function
+      deleteTask(); // Reload delete function for remaining tasks
+      deleteTasklist(); // Reload delete tasklist function
       editTasklist(); // Reload edit function
       displayController();
     });
@@ -172,7 +172,7 @@ const editTasklist = () => {
   });
 };
 
-// Edit a single task
+// Edit a single task, Modal version
 /*const getCurrentTaskData = (form, target) => { // Edit through form
   form.taskTitle.value = target.title;
   form.taskDescription.value = target.description;
@@ -194,8 +194,8 @@ const editTaskForm = (target) => {
     target.deadline = taskData.taskDeadline;
     target.priority = taskData.taskPriority;
     loadTasklistDetails(targetTaskList);
-    removeTasklist();
-    removeTask();
+    deleteTasklist();
+    deleteTask();
     editTasklist();
     editTask();
   });
@@ -214,7 +214,7 @@ const editTask = () => {
     }
 };*/
 
-const editTask = () => { // Live edit prototype
+const editTask = () => { // Live edit
   // Find the current tasklist name, then search for it in the taskslists array and return it
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
@@ -260,12 +260,36 @@ const editTask = () => { // Live edit prototype
       targetTask[i].deadline = editableDeadline.value;
       // Reload DOM elements to reflect changes and reload user actions functions
       loadTasklistDetails(targetTaskList);
-      removeTasklist();
-      removeTask();
+      deleteTasklist();
+      deleteTask();
       editTasklist();
       editTask();
     });
   }
+
+  // Edit task priority
+  const single_task_priority = document.querySelectorAll('.single-task__priority');
+  single_task_priority.forEach((el, i) => {
+    const editablePriority = document.createElement('input');
+    editablePriority.type = 'number';
+    editablePriority.min = '1';
+    editablePriority.max = '3';
+    el.addEventListener('click', () => {
+      editablePriority.value = targetTask[i].priority;
+      single_task_priority[i].replaceWith(editablePriority);
+    });
+    editablePriority.addEventListener('blur', () => {
+      targetTask[i].priority = editablePriority.value;
+      editablePriority.replaceWith(single_task_priority[i]);
+      // Reload DOM elements to reflect changes and reload user actions functions
+      loadTasklistDetails(targetTaskList);
+      deleteTasklist();
+      deleteTask();
+      editTasklist();
+      editTask();
+    });
+  });
+
 };
 
 
@@ -283,8 +307,8 @@ const displayController = () => {
       // Use the takslist name to find the tasklist in the taskListsContainer
       const clickedTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
       loadTasklistDetails(clickedTaskList);
-      removeTasklist();
-      removeTask();
+      deleteTasklist();
+      deleteTask();
       editTasklist();
       editTask();
     });

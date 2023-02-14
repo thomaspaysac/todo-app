@@ -3,6 +3,7 @@
 // SCSS Variables
 $colors: (main: #344B52, main-medium: #718186, main-light: #ccd2d4, main-white: #efefef, main-black: #232323, accent: #d4d0af, accent-light: #eeecdf, warning: #ee6962);
 
+// General style
 * {
   box-sizing: border-box;
   font-family: 'Ubuntu', sans-serif;
@@ -21,6 +22,10 @@ body {
 main {
   display: flex;
   height: 90vh;
+}
+
+.note {
+  font-style: italic;
 }
 
 // Modals
@@ -314,7 +319,7 @@ header {
 .data_legends {
   color: #aaaaaa;
   display: grid;
-  grid-template-columns: 28px 6fr 2fr 1fr 60px;
+  grid-template-columns: 28px 6fr 2fr 1fr 50px;
   align-items: center;
   font-size: 0.9rem;
 
@@ -335,7 +340,7 @@ header {
 
 .single-task__datas {
   display: grid;
-  grid-template-columns: 20px 6fr 2fr 1fr 30px 30px;
+  grid-template-columns: 20px 6fr 2fr 1fr 50px;
   align-items: center;
 
   h3 {

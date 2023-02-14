@@ -1,6 +1,7 @@
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
 
+// Create sidebar content
 const createTasklistContainer = (taskListsArray) => {
   sidebar_tasklists.textContent = '';
   taskListsArray.forEach(el => {
@@ -20,6 +21,7 @@ const createTasklistContainer = (taskListsArray) => {
   });
 };
 
+// Populate main content div
 const loadTasklistDetails = (tasklist) => {
   content_container.textContent = ''; // empty the div before updating
 // Generate tasklist header
@@ -30,9 +32,9 @@ const loadTasklistDetails = (tasklist) => {
   tasklist_title.classList.add('content__tasklist-title');
   tasklist_title.textContent = tasklist.title;
   content_tasklist_header.appendChild(tasklist_title);
-  const edit_tasklist_button = document.createElement('div');
+  /*const edit_tasklist_button = document.createElement('div');
   edit_tasklist_button.classList.add('edit-tasklist__button');
-  content_tasklist_header.appendChild(edit_tasklist_button);
+  content_tasklist_header.appendChild(edit_tasklist_button);*/
   const remove_tasklist_button = document.createElement('div');
   remove_tasklist_button.classList.add('remove-tasklist__button');
   content_tasklist_header.appendChild(remove_tasklist_button);
@@ -61,7 +63,7 @@ const loadTasklistDetails = (tasklist) => {
   label_priority.textContent = 'Priority';
   data_legends.appendChild(label_priority);
   const label_actions = document.createElement('div');
-  label_actions.textContent = 'Actions';
+  label_actions.textContent = 'Delete';
   data_legends.appendChild(label_actions);
 // Generate display of each task
   (tasklist.content).forEach(task => {
@@ -81,7 +83,7 @@ const loadTasklistDetails = (tasklist) => {
     const single_task_deadline = document.createElement('div');
     single_task_deadline.classList.add('single-task__deadline');
     if (task.deadline === '') {
-      single_task_deadline.textContent = 'No deadline';
+      single_task_deadline.textContent = '-';
     } else {
       single_task_deadline.textContent = task.deadline;
     }
@@ -89,6 +91,10 @@ const loadTasklistDetails = (tasklist) => {
     const single_task_priority = document.createElement('div');
     single_task_priority.classList.add('single-task__priority');
     single_task_priority.textContent = '★'.repeat(task.priority);
+    if (task.priority === '') {
+      single_task_priority.textContent = '-';
+      single_task_priority.style.color = '#aaaaaa';
+    }
     if (task.priority === '1') {
       single_task_priority.style.color = '#A7C7E7';
     } else if (task.priority === '2') {
@@ -97,9 +103,9 @@ const loadTasklistDetails = (tasklist) => {
       single_task_priority.style.color = '#ff6961';
     }
     single_task_datas.appendChild(single_task_priority);
-    const edit_single_task_button = document.createElement('div');
+    /*const edit_single_task_button = document.createElement('div');
     edit_single_task_button.classList.add('edit-single-task__button');
-    single_task_datas.appendChild(edit_single_task_button);
+    single_task_datas.appendChild(edit_single_task_button);*/
     const remove_single_task_button = document.createElement('div');
     remove_single_task_button.classList.add('remove-single-task__button');
     single_task_datas.appendChild(remove_single_task_button);
