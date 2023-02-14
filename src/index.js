@@ -1,6 +1,6 @@
 import './style.css';
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer } from './dom-create.js';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, parseISO, formatDistanceToNow } from 'date-fns';
 
 // Global variables
 const taskListsContainer = [];
@@ -68,13 +68,11 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
     taskData.taskDescription = 'No description.';
   }
   const description = taskData.taskDescription;
-  /*if (taskData.taskDeadline === '') {
-    taskData.taskDeadline = '-';
-  }*/
-  const deadline = taskData.taskDeadline;
-  /*if (taskData.taskPriority === '') {
-    taskData.taskPriority = '-';
-  }*/
+  const date = taskData.taskDeadline;
+  const ISOdate = parseISO(date);
+  const formDate = format(ISOdate, 'dd/MM/yyyy');
+  const deadline = formDate;
+  //const deadline = taskData.taskDeadline;
   const priority = taskData.taskPriority;
   newTask = Task(title, description, deadline, priority, tasklist);
   addTaskToTaskList(newTask);
@@ -256,8 +254,9 @@ const editTask = () => { // Live edit
       single_task_deadline[i].replaceWith(editableDeadline);
     });
     editableDeadline.addEventListener('blur', () => {
+      const ISO_date = parseISO(editableDeadline.value);
+      targetTask[i].deadline = format(ISO_date, 'dd/MM/yyyy');
       editableDeadline.replaceWith(single_task_deadline[i]);
-      targetTask[i].deadline = editableDeadline.value;
       // Reload DOM elements to reflect changes and reload user actions functions
       loadTasklistDetails(targetTaskList);
       deleteTasklist();
@@ -319,5 +318,5 @@ const displayController = () => {
 // Test purpose
 
 TEST_BUTTON.addEventListener('click', () => {
-    console.log(taskListsContainer);
+  console.log(taskListsContainer);
 });
