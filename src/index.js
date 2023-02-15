@@ -1,6 +1,6 @@
 import './style.css';
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer } from './dom-create.js';
-import { format, parseISO, formatDistanceToNow, isBefore } from 'date-fns';
+import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 
 // Global variables
 const taskListsContainer = [];
@@ -282,7 +282,39 @@ const editTask = () => { // Live edit
       editTask();
     });
   });
+};
 
+// SORTING FUNCTIONS: Sort tasks by deadline or by priority
+// For each tasklist, add task to allDeadlines array only if its deadline is set in the future
+const getAllDeadlines = () => {
+  const allFutureDeadlines = [];
+  const deadlineToday = [];
+  const deadlineWeek = [];
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  taskListsContainer.forEach(tasklist => {
+    tasklist.content.forEach(task => {
+      if (!isBefore(parseISO(task.deadline), today) && task.deadline !== '' ||
+      parseISO(task.deadline) === today) {
+        allFutureDeadlines.push(task);
+      }
+    });
+  });
+
+  allFutureDeadlines.forEach(task => {
+    const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
+    if (timeToDeadline.includes('hours')) { // Check if the deadline is in less than 24 hours
+      deadlineToday.push(task);
+    }
+    else if (timeToDeadline.includes('days')) {
+      const daysToDeadline = timeToDeadline.replace(/\D/g, "");
+      if (daysToDeadline <= 7) { // Check if the deadline is in less than 7 days
+        deadlineWeek.push(task);
+      }
+    }
+  });
+
+  console.log(allFutureDeadlines, deadlineToday, deadlineWeek);
 };
 
 
@@ -313,4 +345,5 @@ const displayController = () => {
 
 TEST_BUTTON.addEventListener('click', () => {
     //console.log(taskListsContainer);
+    getAllDeadlines();
 });

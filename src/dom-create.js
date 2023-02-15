@@ -1,4 +1,4 @@
-import { format, parseISO, formatDistanceToNow, isBefore } from 'date-fns';
+import { parseISO, formatDistanceToNow, isBefore } from 'date-fns';
 
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
@@ -93,7 +93,7 @@ const loadTasklistDetails = (tasklist) => {
     const timeToDeadline = document.createElement('div');
     timeToDeadline.classList.add('time-to-deadline');
     if (task.deadline === '') {
-      timeToDeadline.textContent = '-';
+      timeToDeadline.textContent = '';
     } else if (isBefore(parseISO(task.deadline), new Date())) {
       timeToDeadline.textContent = formatDistanceToNow(parseISO(task.deadline)) + ' ago';
     } else {
