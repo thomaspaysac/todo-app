@@ -16,3 +16,15 @@ Along the course of the development, I found myself going outside the scope of t
 - Add option to sort tasks by deadline on tasklist details display (like it already does by default when filtering by deadline) ;
 - Customize tasklists with color dots to give a more visual feedback when browsing all tasks by deadline ;
 - Add local storage and network storage.
+
+### Developed with
+
+- Vanilla JavaScript ;
+- HTML ;
+- CSS (with SCSS) ;
+- Webpack.
+
+### Credits
+
+Developed by stagnant-sys.
+Thanks to user [takinabradley](https://github.com/takinabradley) on The Odin Project discord.
