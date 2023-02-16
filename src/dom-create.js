@@ -38,9 +38,6 @@ const loadTasklistDetails = (tasklist) => {
   tasklist_title.classList.add('content__tasklist-title');
   tasklist_title.textContent = tasklist.title;
   content_tasklist_header.appendChild(tasklist_title);
-  /*const edit_tasklist_button = document.createElement('div');
-  edit_tasklist_button.classList.add('edit-tasklist__button');
-  content_tasklist_header.appendChild(edit_tasklist_button);*/
   const remove_tasklist_button = document.createElement('div');
   remove_tasklist_button.classList.add('remove-tasklist__button');
   content_tasklist_header.appendChild(remove_tasklist_button);
@@ -81,10 +78,19 @@ const loadTasklistDetails = (tasklist) => {
     single_task_container.appendChild(single_task_datas);
     const task_checkbox = document.createElement('input');
     task_checkbox.type = "checkbox";
+    task_checkbox.classList.add('task-checkbox');
+    if (task.checked) {
+      task_checkbox.checked = true;
+    }
     single_task_datas.appendChild(task_checkbox);
     const single_task_title = document.createElement('h3');
     single_task_title.classList.add('single-task__title');
     single_task_title.textContent = task.title;
+    if (task.checked) {
+      single_task_title.style.color = '#aaaaaa';
+    } else if (!task.checked) {
+      single_task_title.style.color = '#000000';
+    }
     single_task_datas.appendChild(single_task_title);
     const single_task_deadline = document.createElement('div');
     single_task_deadline.classList.add('single-task__deadline');
@@ -119,9 +125,6 @@ const loadTasklistDetails = (tasklist) => {
       single_task_priority.style.color = '#ff6961';
     }
     single_task_datas.appendChild(single_task_priority);
-    /*const edit_single_task_button = document.createElement('div');
-    edit_single_task_button.classList.add('edit-single-task__button');
-    single_task_datas.appendChild(edit_single_task_button);*/
     const remove_single_task_button = document.createElement('div');
     remove_single_task_button.classList.add('remove-single-task__button');
     single_task_datas.appendChild(remove_single_task_button);

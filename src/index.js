@@ -18,14 +18,14 @@ const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 
 
-// General functions
+// GENERAL FUNCTIONS
 const capitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
 // Factory function for creating new single tasks
-const Task = (title, description, deadline, priority, tasklist) => {
-  return { title, description, deadline, priority, tasklist };
+const Task = (title, description, deadline, priority, tasklist, checked) => {
+  return { title, description, deadline, priority, tasklist, checked };
 };
 
 // Factory function for creating tasklists, unto which we can push single tasks
@@ -34,7 +34,8 @@ const Tasklist = (title, description) => {
   return { title, description, content };
 };
 
-// Modals
+
+// MODALS
 const openModal = (modal) => {
   BACKDROP.style.display = 'block';
   modal.style.display = 'block';
@@ -51,6 +52,7 @@ BACKDROP.addEventListener('click', () => closeModal());
 NEW_TASK_BUTTON.addEventListener('click', () => {
   openModal(NEW_TASK_MODAL);
 });
+
 
 // TASKS AND TASKLISTS ACTIONS: Create, Delete, Edit
 //
@@ -70,7 +72,8 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   const description = taskData.taskDescription;
   const deadline = taskData.taskDeadline;
   const priority = taskData.taskPriority;
-  newTask = Task(title, description, deadline, priority, tasklist);
+  const checked = false;
+  newTask = Task(title, description, deadline, priority, tasklist, checked);
   addTaskToTaskList(newTask);
   closeModal();
   });
@@ -151,6 +154,9 @@ const editTasklist = () => {
   TASKLIST_NAME_ELEMENT.addEventListener('blur', () => {
     TASKLIST_NAME_ELEMENT.contentEditable = 'false';
     targetTaskList.title = TASKLIST_NAME_ELEMENT.textContent; // Update tasklist in array
+    targetTaskList.content.forEach(task => {
+      task.tasklist = targetTaskList.title;
+    });
     createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
     editTasklist(); // Reload edit function
   });
@@ -165,54 +171,26 @@ const editTasklist = () => {
   });
 };
 
-// Edit a single task, Modal version
-/*const getCurrentTaskData = (form, target) => { // Edit through form
-  form.taskTitle.value = target.title;
-  form.taskDescription.value = target.description;
-  form.taskDeadline.value = target.deadline;
-  form.taskPriority.value = target.priority;
-  form.taskList.value = target.tasklist;
-};
-
-const editTaskForm = (target) => {
-  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent;
-  const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
-  EDIT_TASK_FORM.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const formData = new FormData(EDIT_TASK_FORM);
-    const taskData = Object.fromEntries(formData);
-    target.tasklist = capitalizeString(taskData.taskList);
-    target.title = capitalizeString(taskData.taskTitle);
-    target.description = taskData.taskDescription;
-    target.deadline = taskData.taskDeadline;
-    target.priority = taskData.taskPriority;
-    loadTasklistDetails(targetTaskList);
-    deleteTasklist();
-    deleteTask();
-    editTasklist();
-    editTask();
-  });
-};
-
-const editTask = () => {
-  const targetTaskListName = document.querySelector('.content__tasklist-title').textContent;
-  const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
-  const edit_task_button = document.querySelectorAll('.edit-single-task__button');
-  for (let i = 0; i < edit_task_button.length; i++) {
-    edit_task_button[i].addEventListener('click', () => {
-      const targetTaskContent = targetTaskList.content[i]; // Find clicked task
-      getCurrentTaskData(EDIT_TASK_FORM, targetTaskContent); // Fill the edit form with current datas
-      editTaskForm(targetTaskContent);
-    });
-    }
-};*/
-
-const editTask = () => { // Live edit
+const editTask = () => { // Live edit of a single task
   // Find the current tasklist name, then search for it in the taskslists array and return it
   const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; 
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
   // Single tasks are stored as objects in the tasklist.content property. Create a shortcut to access the wanted task.
   const targetTask = targetTaskList.content;
+
+  // Check task
+  const task_checkbox = document.querySelectorAll('.task-checkbox');
+  task_checkbox.forEach((el, i) => {
+    el.addEventListener('click', () => {
+      if (el.checked) {
+        targetTask[i].checked = true;
+      } else if (!el.checked) {
+        targetTask[i].checked = false;
+      }
+      loadTasklistDetails(targetTaskList);
+      editTask();
+    });
+  });
 
   // Edit task title
   const single_task_title = document.querySelectorAll('.single-task__title');
@@ -291,13 +269,13 @@ const getDeadlines = (() => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // For each tasklist, add task to allDeadlines array only if its deadline is set in the future
+  // For each tasklist, add task to allDeadlines array only if its deadline is set in the future and the task is not checked
   const getAllDeadlines = () => {
     allFutureDeadlines.length = 0;
     sortedDeadlines = [];
     taskListsContainer.forEach(tasklist => {
       tasklist.content.forEach(task => {
-        if (!isBefore(parseISO(task.deadline), today) && task.deadline !== '' || parseISO(task.deadline) === today) {
+        if (!task.checked && !isBefore(parseISO(task.deadline), today) && task.deadline !== '' || parseISO(task.deadline) === today) {
           allFutureDeadlines.push(task);
         }
       });
@@ -318,6 +296,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('Today', deadlineToday);
+    displayController();
   };
 
   const getWeek = () => {
@@ -336,6 +315,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('This week', deadlineWeek);
+    displayController();
   };
 
   const getMonth = () => {
@@ -353,6 +333,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('This month', deadlineMonth);
+    displayController();
   };
 
   const getFurther = () => {
@@ -365,6 +346,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('Further...', deadlineFurther);
+    displayController();
   };
 
   return {
@@ -400,22 +382,16 @@ const displayController = () => {
 
 // Filter tasks by deadline
 const day_filter_button = document.getElementById('deadline-today');
-day_filter_button.addEventListener('click', () => {
-  getDeadlines.getDay();
-  
-  }
-);
-
+day_filter_button.addEventListener('click', () => {getDeadlines.getDay();});
 const week_filter_button = document.getElementById('deadline-week');
 week_filter_button.addEventListener('click', () => getDeadlines.getWeek());
-
 const month_filter_button = document.getElementById('deadline-month');
 month_filter_button.addEventListener('click', () => getDeadlines.getMonth());
-
 const further_filter_button = document.getElementById('deadline-further');
 further_filter_button.addEventListener('click', () => getDeadlines.getFurther());
 
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
+  console.log(taskListsContainer[0].content);
 });
