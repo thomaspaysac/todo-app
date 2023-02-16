@@ -2,6 +2,7 @@ import { parseISO, formatDistanceToNow, isBefore } from 'date-fns';
 
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
+const sort_select_container = document.querySelector('.sort-select__container');
 
 const resetContentContainer = () => {
   content_container.textContent = '';
@@ -30,6 +31,7 @@ const createTasklistContainer = (taskListsArray) => {
 // Populate main content div when clicking on sidebar
 const loadTasklistDetails = (tasklist) => {
   content_container.textContent = ''; // empty the div before updating
+  sort_select_container.style.display = 'flex';
 // Generate tasklist header
   const content_tasklist_header = document.createElement('div');
   content_tasklist_header.classList.add('content__tasklist-header');
@@ -137,6 +139,7 @@ const loadTasklistDetails = (tasklist) => {
 
 const loadFiltersDetails = (filter, deadlineArray) => {
   content_container.textContent = ''; // empty the div before updating
+  sort_select_container.style.display = 'none';
 // Generate tasklist header
   const content_tasklist_header = document.createElement('div');
   content_tasklist_header.classList.add('content__tasklist-header');

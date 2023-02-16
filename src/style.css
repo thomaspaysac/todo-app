@@ -110,6 +110,16 @@ main {
     #add-task_form input[type="submit"]:active {
       transform: translateY(2px); }
 
+.sort-select__container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 8px; }
+  .sort-select__container select {
+    background-color: #ccd2d4;
+    border-radius: 5px;
+    padding: 4px; }
+
 header {
   display: flex;
   height: 10vh;

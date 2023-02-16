@@ -14,6 +14,7 @@ const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
+const SORT_SELECT = document.getElementById('sort-select');
 
 
 // GENERAL FUNCTIONS
@@ -22,6 +23,7 @@ const CapitalizeString = (string) => {
 };
 
 const UpdateInterface = (tasklist) => {
+  SortTasklist(tasklist);
   loadTasklistDetails(tasklist);
   createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
   deleteTask(); // Reload delete function for remaining tasks
@@ -349,8 +351,21 @@ const getDeadlines = (() => {
   };
 })();
 
-
-
+// Change sort order when viewing tasklists
+const SortTasklist = (tasklist) => {
+  const sort_criteria = SORT_SELECT.value;
+  let sortedTasks = [];
+  if (sort_criteria === 'deadline-asc') {
+    tasklist.content.sort( // Sort all tasks by ascending deadline
+    (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0);
+  } else if (sort_criteria === 'deadline-des') {
+    tasklist.content.sort( // Sort all tasks by descending deadline
+    (task1, task2) => (task1.deadline < task2.deadline) ? 1 : (task1.deadline > task2.deadline) ? -1 : 0);
+  } else if (sort_criteria === 'priority') {
+    tasklist.content.sort(
+    (task1, task2) => (task1.priority < task2.priority) ? 1 : (task1.priority > task2.priority) ? -1 : 0);
+  }
+};
 
 // DOM ACTIONS
 // When clicking on a takslist name, update the display with the list of tasks
@@ -402,5 +417,5 @@ const LoadCheckboxes = (array) =>  {
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(taskListsContainer);
+  console.log(sort_options.value);
 });

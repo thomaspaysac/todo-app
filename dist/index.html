@@ -108,8 +108,15 @@
   </aside>
 
   <div class="content__container">
-  <div class="content-output">
-  </div>
+    <div class="sort-select__container">
+      <label for="sort-select">Sort tasks by:</label>
+      <select name="sort-select" id="sort-select">
+        <option value="deadline-asc">Deadline ascending (default)</option>
+        <option value="deadline-des">Deadline descending</option>
+        <option value="priority">Priority</option>
+      </select>
+    </div>
+  <div class="content-output"></div>
   </div>
 </main>
 
