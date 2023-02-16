@@ -89,7 +89,7 @@ const loadTasklistDetails = (tasklist) => {
     if (task.checked) {
       single_task_title.style.color = '#aaaaaa';
     } else if (!task.checked) {
-      single_task_title.style.color = '#000000';
+      single_task_title.style.color = '#232323';
     }
     single_task_datas.appendChild(single_task_title);
     const single_task_deadline = document.createElement('div');
@@ -171,6 +171,7 @@ const loadFiltersDetails = (filter, deadlineArray) => {
     tasks_display.appendChild(filtered_task_datas);
     const task_checkbox = document.createElement('input');
     task_checkbox.type = "checkbox";
+    task_checkbox.classList.add('filtered-task-checkbox');
     filtered_task_datas.appendChild(task_checkbox);
     const filtered_task_tasklist = document.createElement('h3');
     filtered_task_tasklist.textContent = task.tasklist +' :';

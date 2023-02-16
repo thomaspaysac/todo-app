@@ -283,7 +283,6 @@ const getDeadlines = (() => {
     sortedDeadlines = allFutureDeadlines.sort( // Sort all tasks by descending deadline
       (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0
     );
-    console.log(sortedDeadlines);
   };
 
   const getDay = () => {
@@ -296,6 +295,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('Today', deadlineToday);
+    LoadCheckboxes(deadlineToday);
     displayController();
   };
 
@@ -315,6 +315,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('This week', deadlineWeek);
+    LoadCheckboxes(deadlineWeek);
     displayController();
   };
 
@@ -333,6 +334,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('This month', deadlineMonth);
+    LoadCheckboxes(deadlineMonth);
     displayController();
   };
 
@@ -346,6 +348,7 @@ const getDeadlines = (() => {
       }
     });
     loadFiltersDetails('Further...', deadlineFurther);
+    LoadCheckboxes(deadlineFurther);
     displayController();
   };
 
@@ -382,14 +385,35 @@ const displayController = () => {
 
 // Filter tasks by deadline
 const day_filter_button = document.getElementById('deadline-today');
-day_filter_button.addEventListener('click', () => {getDeadlines.getDay();});
+day_filter_button.addEventListener('click', () => {
+  getDeadlines.getDay();
+});
 const week_filter_button = document.getElementById('deadline-week');
-week_filter_button.addEventListener('click', () => getDeadlines.getWeek());
+week_filter_button.addEventListener('click', () => {
+  getDeadlines.getWeek();
+});
 const month_filter_button = document.getElementById('deadline-month');
-month_filter_button.addEventListener('click', () => getDeadlines.getMonth());
+month_filter_button.addEventListener('click', () => {
+  getDeadlines.getMonth();
+});
 const further_filter_button = document.getElementById('deadline-further');
-further_filter_button.addEventListener('click', () => getDeadlines.getFurther());
+further_filter_button.addEventListener('click', () => {
+  getDeadlines.getFurther();
+});
 
+// When click on checkbox, find the right task and toggle 'checked'. Grey out the text.
+const LoadCheckboxes = (array) =>  {
+  const filtered_checkbox = document.querySelectorAll('.filtered-task-checkbox');
+  filtered_checkbox.forEach((el, i) => {
+    el.addEventListener('click', () => {
+      if (!array[i].checked) {
+        array[i].checked = true;
+      } else if (array[i].checked) {
+        array[i].checked = false;
+      }
+    });
+  });
+};
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
