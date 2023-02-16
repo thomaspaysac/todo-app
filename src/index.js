@@ -96,12 +96,10 @@ const addTaskToTaskList = (newTask) => {
     taskListsContainer.push(newTaskList);
     (newTaskList.content).push(newTask);
     newTaskList.description = 'There is no description yet...';
-    createTasklistContainer(taskListsContainer);
-    displayController();
+    UpdateInterface(newTaskList);
   } else {
     (targetTaskList.content).push(newTask); // Add to existing tasklist
-    createTasklistContainer(taskListsContainer);
-    displayController();
+    UpdateInterface(targetTaskList);
   }
 };
 
