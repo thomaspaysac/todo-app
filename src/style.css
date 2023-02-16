@@ -284,6 +284,33 @@ header {
   color: #aaaaaa;
   font-size: 0.8rem; }
 
+.filtered-task-data_legends {
+  color: #aaaaaa;
+  display: grid;
+  grid-template-columns: 20px 1fr 200px 50px;
+  align-items: center;
+  font-size: 0.9rem; }
+  .filtered-task-data_legends :nth-child(3),
+  .filtered-task-data_legends :nth-child(4) {
+    justify-self: center; }
+
+.filtered-task__datas {
+  display: grid;
+  grid-template-columns: 20px fit-content(30%) 1fr 200px 50px;
+  align-items: center; }
+  .filtered-task__datas input[type="checkbox"] {
+    margin: 0;
+    height: 15px;
+    justify-self: start; }
+  .filtered-task__datas h3 {
+    font-size: 1rem;
+    margin: 8px 0; }
+  .filtered-task__datas .filtered-task__title {
+    margin-left: 8px; }
+  .filtered-task__datas :nth-child(4),
+  .filtered-task__datas :nth-child(5) {
+    justify-self: center; }
+
 /* width */
 ::-webkit-scrollbar {
   width: 10px; }

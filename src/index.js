@@ -287,12 +287,14 @@ const editTask = () => { // Live edit
 // SORTING FUNCTIONS: Sort tasks by deadline or by priority
 const getDeadlines = (() => {
   const allFutureDeadlines = [];
+  let sortedDeadlines = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
   // For each tasklist, add task to allDeadlines array only if its deadline is set in the future
   const getAllDeadlines = () => {
     allFutureDeadlines.length = 0;
+    sortedDeadlines = [];
     taskListsContainer.forEach(tasklist => {
       tasklist.content.forEach(task => {
         if (!isBefore(parseISO(task.deadline), today) && task.deadline !== '' || parseISO(task.deadline) === today) {
@@ -300,66 +302,69 @@ const getDeadlines = (() => {
         }
       });
     });
+    sortedDeadlines = allFutureDeadlines.sort(
+      (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0
+    );
+    console.log(sortedDeadlines);
   };
 
   const getDay = () => {
     const deadlineToday = [];
     getAllDeadlines();
-    allFutureDeadlines.forEach(task => {
+    sortedDeadlines.forEach(task => {
       const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
-      if (timeToDeadline.includes('hours')) { // Check if the deadline is in less than 24 hours
+      if (timeToDeadline.includes('hour')) { // Check if the deadline is in less than 24 hours
         deadlineToday.push(task);
       }
     });
     loadFiltersDetails('Today', deadlineToday);
-    console.log(deadlineToday);
   };
 
   const getWeek = () => {
     const deadlineWeek = [];
     getAllDeadlines();
-    allFutureDeadlines.forEach(task => {
+    sortedDeadlines.forEach(task => {
       const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
       if (timeToDeadline.includes('hours')) {
         deadlineWeek.push(task);
 
-      } else if (timeToDeadline.includes('days')) {
+      } else if (timeToDeadline.includes('day')) {
         const daysToDeadline = timeToDeadline.replace(/\D/g, "");
         if (daysToDeadline <= 7) { // Check if the deadline is 7 days or less
           deadlineWeek.push(task);
         }
       }
     });
-    console.log(deadlineWeek);
+    loadFiltersDetails('This week', deadlineWeek);
   };
 
   const getMonth = () => {
     const deadlineMonth = [];
     getAllDeadlines();
-    allFutureDeadlines.forEach(task => {
+    sortedDeadlines.forEach(task => {
       const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
-      if (timeToDeadline.includes('hours')) {
+      if (timeToDeadline.includes('hour')) {
         deadlineMonth.push(task);
-      } else if (timeToDeadline.includes('days')) {
+      } else if (timeToDeadline.includes('day')) {
         const daysToDeadline = timeToDeadline.replace(/\D/g, "");
         if (daysToDeadline < 31) { // Check if the deadline is in less than 31 days
           deadlineMonth.push(task);
         }
       }
     });
-    console.log(deadlineMonth);
+    loadFiltersDetails('This month', deadlineMonth);
   };
 
   const getFurther = () => {
     const deadlineFurther = [];
     getAllDeadlines();
-    allFutureDeadlines.forEach(task => {
+    sortedDeadlines.forEach(task => {
       const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
       if (timeToDeadline.includes('month') || timeToDeadline.includes('year')) {
         deadlineFurther.push(task);
       }
     });
-    console.log(deadlineFurther);
+    loadFiltersDetails('Further...', deadlineFurther);
   };
 
   return {
@@ -395,7 +400,11 @@ const displayController = () => {
 
 // Filter tasks by deadline
 const day_filter_button = document.getElementById('deadline-today');
-day_filter_button.addEventListener('click', () => getDeadlines.getDay());
+day_filter_button.addEventListener('click', () => {
+  getDeadlines.getDay();
+  
+  }
+);
 
 const week_filter_button = document.getElementById('deadline-week');
 week_filter_button.addEventListener('click', () => getDeadlines.getWeek());
@@ -409,6 +418,4 @@ further_filter_button.addEventListener('click', () => getDeadlines.getFurther())
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-    //console.log(taskListsContainer);
-    getDeadlines.getFurther();
 });
