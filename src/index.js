@@ -1,5 +1,5 @@
 import './style.css';
-import { createTasklistContainer, loadTasklistDetails, resetContentContainer } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 
 // Global variables
@@ -285,37 +285,90 @@ const editTask = () => { // Live edit
 };
 
 // SORTING FUNCTIONS: Sort tasks by deadline or by priority
-// For each tasklist, add task to allDeadlines array only if its deadline is set in the future
-const getAllDeadlines = () => {
+const getDeadlines = (() => {
   const allFutureDeadlines = [];
-  const deadlineToday = [];
-  const deadlineWeek = [];
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  taskListsContainer.forEach(tasklist => {
-    tasklist.content.forEach(task => {
-      if (!isBefore(parseISO(task.deadline), today) && task.deadline !== '' ||
-      parseISO(task.deadline) === today) {
-        allFutureDeadlines.push(task);
+  
+  // For each tasklist, add task to allDeadlines array only if its deadline is set in the future
+  const getAllDeadlines = () => {
+    allFutureDeadlines.length = 0;
+    taskListsContainer.forEach(tasklist => {
+      tasklist.content.forEach(task => {
+        if (!isBefore(parseISO(task.deadline), today) && task.deadline !== '' || parseISO(task.deadline) === today) {
+          allFutureDeadlines.push(task);
+        }
+      });
+    });
+  };
+
+  const getDay = () => {
+    const deadlineToday = [];
+    getAllDeadlines();
+    allFutureDeadlines.forEach(task => {
+      const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
+      if (timeToDeadline.includes('hours')) { // Check if the deadline is in less than 24 hours
+        deadlineToday.push(task);
       }
     });
-  });
+    loadFiltersDetails('Today', deadlineToday);
+    console.log(deadlineToday);
+  };
 
-  allFutureDeadlines.forEach(task => {
-    const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
-    if (timeToDeadline.includes('hours')) { // Check if the deadline is in less than 24 hours
-      deadlineToday.push(task);
-    }
-    else if (timeToDeadline.includes('days')) {
-      const daysToDeadline = timeToDeadline.replace(/\D/g, "");
-      if (daysToDeadline <= 7) { // Check if the deadline is in less than 7 days
+  const getWeek = () => {
+    const deadlineWeek = [];
+    getAllDeadlines();
+    allFutureDeadlines.forEach(task => {
+      const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
+      if (timeToDeadline.includes('hours')) {
         deadlineWeek.push(task);
-      }
-    }
-  });
 
-  console.log(allFutureDeadlines, deadlineToday, deadlineWeek);
-};
+      } else if (timeToDeadline.includes('days')) {
+        const daysToDeadline = timeToDeadline.replace(/\D/g, "");
+        if (daysToDeadline <= 7) { // Check if the deadline is 7 days or less
+          deadlineWeek.push(task);
+        }
+      }
+    });
+    console.log(deadlineWeek);
+  };
+
+  const getMonth = () => {
+    const deadlineMonth = [];
+    getAllDeadlines();
+    allFutureDeadlines.forEach(task => {
+      const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
+      if (timeToDeadline.includes('hours')) {
+        deadlineMonth.push(task);
+      } else if (timeToDeadline.includes('days')) {
+        const daysToDeadline = timeToDeadline.replace(/\D/g, "");
+        if (daysToDeadline < 31) { // Check if the deadline is in less than 31 days
+          deadlineMonth.push(task);
+        }
+      }
+    });
+    console.log(deadlineMonth);
+  };
+
+  const getFurther = () => {
+    const deadlineFurther = [];
+    getAllDeadlines();
+    allFutureDeadlines.forEach(task => {
+      const timeToDeadline = formatDistanceToNow(parseISO(task.deadline));
+      if (timeToDeadline.includes('month') || timeToDeadline.includes('year')) {
+        deadlineFurther.push(task);
+      }
+    });
+    console.log(deadlineFurther);
+  };
+
+  return {
+    getDay,
+    getWeek,
+    getMonth,
+    getFurther,
+  };
+})();
 
 
 
@@ -340,10 +393,22 @@ const displayController = () => {
   }
 };
 
+// Filter tasks by deadline
+const day_filter_button = document.getElementById('deadline-today');
+day_filter_button.addEventListener('click', () => getDeadlines.getDay());
+
+const week_filter_button = document.getElementById('deadline-week');
+week_filter_button.addEventListener('click', () => getDeadlines.getWeek());
+
+const month_filter_button = document.getElementById('deadline-month');
+month_filter_button.addEventListener('click', () => getDeadlines.getMonth());
+
+const further_filter_button = document.getElementById('deadline-further');
+further_filter_button.addEventListener('click', () => getDeadlines.getFurther());
+
 
 // Test purpose
-
 TEST_BUTTON.addEventListener('click', () => {
     //console.log(taskListsContainer);
-    getAllDeadlines();
+    getDeadlines.getFurther();
 });
