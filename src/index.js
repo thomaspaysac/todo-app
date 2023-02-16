@@ -10,8 +10,6 @@ let newTask;
 // DOM Elements
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 const NEW_TASK_FORM = document.getElementById('add-task_form');
-const EDIT_TASK_FORM = document.getElementById('editTaskForm'); // Unused
-
 const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
@@ -19,8 +17,18 @@ const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 
 
 // GENERAL FUNCTIONS
-const capitalizeString = (string) => {
+const CapitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+const UpdateInterface = (tasklist) => {
+  loadTasklistDetails(tasklist);
+  createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+  deleteTask(); // Reload delete function for remaining tasks
+  deleteTasklist(); // Reload delete tasklist function
+  editTasklist(); // Reload edit function
+  editTask();
+  displayController();
 };
 
 // Factory function for creating new single tasks
@@ -36,21 +44,21 @@ const Tasklist = (title, description) => {
 
 
 // MODALS
-const openModal = (modal) => {
+const OpenModal = (modal) => {
   BACKDROP.style.display = 'block';
   modal.style.display = 'block';
 };
 
-const closeModal = () => {
+const CloseModal = () => {
     BACKDROP.style.display = 'none';
     NEW_TASK_MODAL.style.display = 'none';
     REMOVE_TASKLIST_MODAL.style.display = 'none';
 };
 
-BACKDROP.addEventListener('click', () => closeModal());
+BACKDROP.addEventListener('click', () => CloseModal());
 
 NEW_TASK_BUTTON.addEventListener('click', () => {
-  openModal(NEW_TASK_MODAL);
+  OpenModal(NEW_TASK_MODAL);
 });
 
 
@@ -64,8 +72,8 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   if (taskData.taskList === '') {
     taskData.taskList = 'General tasks'; // Create a general takslist to put single tasks into
   }
-  const tasklist = capitalizeString(taskData.taskList);
-  const title = capitalizeString(taskData.taskTitle);
+  const tasklist = CapitalizeString(taskData.taskList);
+  const title = CapitalizeString(taskData.taskTitle);
   if (taskData.taskDescription === '') {
     taskData.taskDescription = 'No description.';
   }
@@ -75,7 +83,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   const checked = false;
   newTask = Task(title, description, deadline, priority, tasklist, checked);
   addTaskToTaskList(newTask);
-  closeModal();
+  CloseModal();
   });
 })();
 
@@ -104,10 +112,10 @@ const deleteTasklist = () => {
   const REMOVE_CANCEL_BTN = document.querySelector('.remove-cancel__button');
   const REMOVE_CONFIRM_BTN = document.querySelector('.remove-confirm__button');
   REMOVE_TASKLIST_BUTTON.addEventListener('click', () => {
-    openModal(REMOVE_TASKLIST_MODAL);
+    OpenModal(REMOVE_TASKLIST_MODAL);
     const targetTaskListName = document.querySelector('.content__tasklist-title').textContent; // Find the current tasklist name
     const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
-    REMOVE_CANCEL_BTN.addEventListener('click', () => closeModal());
+    REMOVE_CANCEL_BTN.addEventListener('click', () => CloseModal());
     REMOVE_CONFIRM_BTN.addEventListener('click', () => {
       for (let i = 0; i < taskListsContainer.length; i++) { 
         if (taskListsContainer[i] === targetTaskList) { 
@@ -117,7 +125,7 @@ const deleteTasklist = () => {
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
       displayController(); // Reload the click actions on sidebar tasklists
       resetContentContainer(); // Empty the content container
-      closeModal();
+      CloseModal();
     });
   }
 );
@@ -131,13 +139,7 @@ const deleteTask = () => {
   for (let i = 0; i < REMOVE_TASK_BTN.length; i ++) {
     REMOVE_TASK_BTN[i].addEventListener('click', () => {
       targetTaskList.content.splice(i, 1);
-      loadTasklistDetails(targetTaskList);
-      createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-      deleteTask(); // Reload delete function for remaining tasks
-      deleteTasklist(); // Reload delete tasklist function
-      editTasklist(); // Reload edit function
-      editTask();
-      displayController();
+      UpdateInterface(targetTaskList);
     });
   }
 };
@@ -157,17 +159,16 @@ const editTasklist = () => {
     targetTaskList.content.forEach(task => {
       task.tasklist = targetTaskList.title;
     });
-    createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-    editTasklist(); // Reload edit function
+    UpdateInterface(targetTaskList);
   });
+
   TASKLIST_DESCRIPTION_ELEMENT.addEventListener('click', () => {
     TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'true';
   });
   TASKLIST_DESCRIPTION_ELEMENT.addEventListener('blur', () => {
     TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'false';
     targetTaskList.description = TASKLIST_DESCRIPTION_ELEMENT.textContent;
-    createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
-    editTasklist(); // Reload edit function
+    UpdateInterface(targetTaskList);
   });
 };
 
@@ -187,77 +188,67 @@ const editTask = () => { // Live edit of a single task
       } else if (!el.checked) {
         targetTask[i].checked = false;
       }
-      loadTasklistDetails(targetTaskList);
-      editTask();
+      UpdateInterface(targetTaskList);
     });
   });
 
   // Edit task title
-  const single_task_title = document.querySelectorAll('.single-task__title');
-  for (let i = 0; i < single_task_title.length; i ++) {
-    single_task_title[i].addEventListener('click', () => {
-      single_task_title[i].contentEditable = 'true';
+  const SINGLE_TASK_TITLE = document.querySelectorAll('.single-task__title');
+  for (let i = 0; i < SINGLE_TASK_TITLE.length; i ++) {
+    SINGLE_TASK_TITLE[i].addEventListener('click', () => {
+      SINGLE_TASK_TITLE[i].contentEditable = 'true';
     });
-    single_task_title[i].addEventListener('blur', () => {
-      single_task_title[i].contentEditable = 'false';
-      targetTask[i].title = single_task_title[i].textContent;
-      createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
+    SINGLE_TASK_TITLE[i].addEventListener('blur', () => {
+      SINGLE_TASK_TITLE[i].contentEditable = 'false';
+      targetTask[i].title = SINGLE_TASK_TITLE[i].textContent;
+      UpdateInterface(targetTaskList);
     });
   }
 
   // Edit task description
-  const single_task_description = document.querySelectorAll('.single-task__description');
-  for (let i = 0; i < single_task_description.length; i++) {
-    single_task_description[i].addEventListener('click', () => {
-      single_task_description[i].contentEditable = 'true';
+  const SINGLE_TASK_DESCRIPTION = document.querySelectorAll('.single-task__description');
+  for (let i = 0; i < SINGLE_TASK_DESCRIPTION.length; i++) {
+    SINGLE_TASK_DESCRIPTION[i].addEventListener('click', () => {
+      SINGLE_TASK_DESCRIPTION[i].contentEditable = 'true';
     });
-    single_task_description[i].addEventListener('blur', () => {
-      single_task_description.contentEditable = 'false';
-      targetTask[i].description = single_task_description[i].textContent;
+    SINGLE_TASK_DESCRIPTION[i].addEventListener('blur', () => {
+      SINGLE_TASK_DESCRIPTION.contentEditable = 'false';
+      targetTask[i].description = SINGLE_TASK_DESCRIPTION[i].textContent;
+      UpdateInterface(targetTaskList);
     });
   }
 
   // Edit task deadline
-  const single_task_deadline = document.querySelectorAll('.single-task__deadline');
-  for (let i = 0; i < single_task_deadline.length; i++) { 
+  const SINGLE_TASK_DEADLINE = document.querySelectorAll('.single-task__deadline');
+  for (let i = 0; i < SINGLE_TASK_DEADLINE.length; i++) { 
     const editableDeadline = document.createElement('input');
     editableDeadline.type = 'date';
-    single_task_deadline[i].addEventListener('click', () => {
-      editableDeadline.value = single_task_deadline[i].textContent;
-      single_task_deadline[i].replaceWith(editableDeadline);
+    SINGLE_TASK_DEADLINE[i].addEventListener('click', () => {
+      editableDeadline.value = SINGLE_TASK_DEADLINE[i].textContent;
+      SINGLE_TASK_DEADLINE[i].replaceWith(editableDeadline);
     });
     editableDeadline.addEventListener('blur', () => {
-      editableDeadline.replaceWith(single_task_deadline[i]);
+      editableDeadline.replaceWith(SINGLE_TASK_DEADLINE[i]);
       targetTask[i].deadline = editableDeadline.value;
-      // Reload DOM elements to reflect changes and reload user actions functions
-      loadTasklistDetails(targetTaskList);
-      deleteTasklist();
-      deleteTask();
-      editTasklist();
-      editTask();
+      UpdateInterface(targetTaskList);
     });
   }
 
   // Edit task priority
-  const single_task_priority = document.querySelectorAll('.single-task__priority');
-  single_task_priority.forEach((el, i) => {
+  const SINGLE_TASK_PRIORITY = document.querySelectorAll('.single-task__priority');
+  SINGLE_TASK_PRIORITY.forEach((el, i) => {
     const editablePriority = document.createElement('input');
     editablePriority.type = 'number';
     editablePriority.min = '1';
     editablePriority.max = '3';
     el.addEventListener('click', () => {
       editablePriority.value = targetTask[i].priority;
-      single_task_priority[i].replaceWith(editablePriority);
+      SINGLE_TASK_PRIORITY[i].replaceWith(editablePriority);
     });
     editablePriority.addEventListener('blur', () => {
       targetTask[i].priority = editablePriority.value;
-      editablePriority.replaceWith(single_task_priority[i]);
-      // Reload DOM elements to reflect changes and reload user actions functions
-      loadTasklistDetails(targetTaskList);
-      deleteTasklist();
-      deleteTask();
-      editTasklist();
-      editTask();
+      editablePriority.replaceWith(SINGLE_TASK_PRIORITY[i]);
+      UpdateInterface(targetTaskList);
     });
   });
 };
@@ -374,11 +365,7 @@ const displayController = () => {
       const clicked_task = tasklist[i].textContent;
       // Use the takslist name to find the tasklist in the taskListsContainer
       const clickedTaskList = taskListsContainer.find(({ title }) => title === clicked_task);
-      loadTasklistDetails(clickedTaskList);
-      deleteTasklist();
-      deleteTask();
-      editTasklist();
-      editTask();
+      UpdateInterface(clickedTaskList);
     });
   }
 };
@@ -417,5 +404,5 @@ const LoadCheckboxes = (array) =>  {
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(taskListsContainer[0].content);
+  console.log(taskListsContainer);
 });
