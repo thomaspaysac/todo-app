@@ -302,7 +302,7 @@ const getDeadlines = (() => {
         }
       });
     });
-    sortedDeadlines = allFutureDeadlines.sort(
+    sortedDeadlines = allFutureDeadlines.sort( // Sort all tasks by descending deadline
       (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0
     );
     console.log(sortedDeadlines);
