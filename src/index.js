@@ -15,6 +15,7 @@ const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 const SORT_SELECT = document.getElementById('sort-select');
+const CONTENT_OUTPUT = document.querySelector('.content-output');
 
 
 // GENERAL FUNCTIONS
@@ -354,7 +355,6 @@ const getDeadlines = (() => {
 // Change sort order when viewing tasklists
 const SortTasklist = (tasklist) => {
   const sort_criteria = SORT_SELECT.value;
-  let sortedTasks = [];
   if (sort_criteria === 'deadline-asc') {
     tasklist.content.sort( // Sort all tasks by ascending deadline
     (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0);
@@ -365,6 +365,9 @@ const SortTasklist = (tasklist) => {
     tasklist.content.sort(
     (task1, task2) => (task1.priority < task2.priority) ? 1 : (task1.priority > task2.priority) ? -1 : 0);
   }
+  SORT_SELECT.addEventListener('click', () => { // Bugged, cause browser crash if used too often on the same tasklist
+    UpdateInterface(tasklist);
+  });
 };
 
 // DOM ACTIONS
@@ -417,5 +420,5 @@ const LoadCheckboxes = (array) =>  {
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(sort_options.value);
+  console.log(taskListsContainer);
 });

@@ -147,6 +147,9 @@ header {
     color: #efefef;
     text-decoration: none; }
 
+.sidebar-icon {
+  height: 1rem; }
+
 .sidebar__container {
   width: 300px;
   padding: 20px;
@@ -178,11 +181,17 @@ header {
   .sidebar-category h2 {
     font-weight: 700;
     font-size: 1rem;
-    margin: 0 0 8px 0; }
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 4px; }
   .sidebar-category ul {
     margin: 0 0 0 8px;
     padding: 0;
     list-style-type: none; }
+
+.deadline-category__container li {
+  cursor: pointer; }
 
 .sidebar-tasklist {
   margin-bottom: 8px;
