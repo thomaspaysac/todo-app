@@ -14,10 +14,16 @@ const createTasklistContainer = (taskListsArray) => {
     const tasklist_block = document.createElement('li');
     tasklist_block.classList.add('sidebar-tasklist');
     sidebar_tasklists.appendChild(tasklist_block);
+    
     const tasklist_title = document.createElement('div');
     tasklist_title.classList.add('tasklist-title');
     tasklist_title.textContent = el.title;
     tasklist_block.appendChild(tasklist_title);
+    const tasklist_color = document.createElement('div');
+    tasklist_color.classList.add('sidebar__tasklist-color');
+    tasklist_color.style.backgroundColor = el.color;
+    tasklist_color.style.outline = '1px solid #efefef';
+    tasklist_title.appendChild(tasklist_color);
     (el.content).forEach(el => {
       const tasklist_content = document.createElement('ul');
       tasklist_content.classList.add('tasklist-subtasks');
@@ -38,6 +44,16 @@ const loadTasklistDetails = (tasklist, sortingOrderDeadlines, sortingOrderPriori
   tasklist_title.classList.add('content__tasklist-title');
   tasklist_title.textContent = tasklist.title;
   content_tasklist_header.appendChild(tasklist_title);
+  const tasklist_color_picker = document.createElement('input');
+  tasklist_color_picker.type = 'color';
+  tasklist_color_picker.classList.add('content__tasklist-color-picker');
+  if (tasklist.color === undefined) {
+    tasklist_color_picker.value = '#232323';
+  } else {
+    tasklist_color_picker.value = tasklist.color;
+  }
+  tasklist_color_picker.value = tasklist.color;
+  content_tasklist_header.appendChild(tasklist_color_picker);
   const remove_tasklist_button = document.createElement('div');
   remove_tasklist_button.classList.add('remove-tasklist__button');
   content_tasklist_header.appendChild(remove_tasklist_button);

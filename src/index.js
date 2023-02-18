@@ -43,7 +43,8 @@ const Task = (title, description, deadline, priority, tasklist, checked) => {
 // Factory function for creating tasklists, unto which we can push single tasks
 const Tasklist = (title, description) => {
   const content = [];
-  return { title, description, content };
+  let color;
+  return { title, description, color, content };
 };
 
 
@@ -150,6 +151,7 @@ const deleteTask = () => {
 const editTasklist = () => {
   const TASKLIST_NAME_ELEMENT = document.querySelector('.content__tasklist-title');
   const TASKLIST_DESCRIPTION_ELEMENT = document.querySelector('.content__tasklist-description');
+  const TASKLIST_COLOR_PICKER = document.querySelector('.content__tasklist-color-picker');
   const targetTaskListName = TASKLIST_NAME_ELEMENT.textContent;
   const targetTaskList = taskListsContainer.find(({ title }) => title === targetTaskListName);
   TASKLIST_NAME_ELEMENT.addEventListener('click', () => { // Edit the tasklist title
@@ -170,6 +172,11 @@ const editTasklist = () => {
   TASKLIST_DESCRIPTION_ELEMENT.addEventListener('blur', () => {
     TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'false';
     targetTaskList.description = TASKLIST_DESCRIPTION_ELEMENT.textContent;
+    UpdateInterface(targetTaskList);
+  });
+
+  TASKLIST_COLOR_PICKER.addEventListener('blur', () => {
+    targetTaskList.color = TASKLIST_COLOR_PICKER.value;
     UpdateInterface(targetTaskList);
   });
 };
@@ -287,7 +294,7 @@ const getDeadlines = (() => {
         deadlineToday.push(task);
       }
     });
-    loadFiltersDetails('Today', deadlineToday);
+    loadFiltersDetails('Next 24 hours', deadlineToday);
     LoadCheckboxes(deadlineToday);
     displayController();
   };

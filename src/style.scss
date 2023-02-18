@@ -224,6 +224,16 @@ header {
   }
 }
 
+.sidebar__tasklist-color {
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  border-radius: 50%;
+  vertical-align: up;
+  margin-left: 8px;
+  //outline: 2px solid map-get($colors, main-white);
+}
+
 .sidebar-category {
   margin-bottom: 32px;
 
