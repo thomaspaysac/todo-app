@@ -2,7 +2,6 @@ import { parseISO, formatDistanceToNow, isBefore } from 'date-fns';
 
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
-const sort_select_container = document.querySelector('.sort-select__container');
 
 const resetContentContainer = () => {
   content_container.textContent = '';
@@ -29,9 +28,8 @@ const createTasklistContainer = (taskListsArray) => {
 };
 
 // Populate main content div when clicking on sidebar
-const loadTasklistDetails = (tasklist) => {
+const loadTasklistDetails = (tasklist, sortingOrderDeadlines, sortingOrderPriority) => {
   content_container.textContent = ''; // empty the div before updating
-  sort_select_container.style.display = 'flex';
 // Generate tasklist header
   const content_tasklist_header = document.createElement('div');
   content_tasklist_header.classList.add('content__tasklist-header');
@@ -62,10 +60,22 @@ const loadTasklistDetails = (tasklist) => {
   label_task.textContent = 'Task';
   data_legends.appendChild(label_task);
   const label_deadline = document.createElement('div');
-  label_deadline.textContent = 'Deadline';
+  label_deadline.classList.add('label-deadline');
+  if (sortingOrderDeadlines === undefined) {
+    label_deadline.textContent = 'Deadline ●';
+  } else if (sortingOrderDeadlines === 'ascending') {
+    label_deadline.textContent = 'Deadline ▲';
+  } else if (sortingOrderDeadlines === 'descending') {
+    label_deadline.textContent = 'Deadline ▼';
+  }
   data_legends.appendChild(label_deadline);
   const label_priority = document.createElement('div');
-  label_priority.textContent = 'Priority';
+  label_priority.classList.add('label-priority');
+  if (!sortingOrderPriority) {
+    label_priority.textContent = 'Priority ●';
+  } else if (sortingOrderPriority) {
+    label_priority.textContent = 'Priority ▼';
+  }
   data_legends.appendChild(label_priority);
   const label_actions = document.createElement('div');
   label_actions.textContent = 'Delete';
@@ -114,7 +124,7 @@ const loadTasklistDetails = (tasklist) => {
     single_task_deadline.appendChild(timeToDeadline);
     const single_task_priority = document.createElement('div');
     single_task_priority.classList.add('single-task__priority');
-    single_task_priority.textContent = '★'.repeat(task.priority);
+    single_task_priority.textContent = '⬤'.repeat(task.priority);
     if (task.priority === '') {
       single_task_priority.textContent = '-';
       single_task_priority.style.color = '#aaaaaa';
@@ -139,7 +149,6 @@ const loadTasklistDetails = (tasklist) => {
 
 const loadFiltersDetails = (filter, deadlineArray) => {
   content_container.textContent = ''; // empty the div before updating
-  sort_select_container.style.display = 'none';
 // Generate tasklist header
   const content_tasklist_header = document.createElement('div');
   content_tasklist_header.classList.add('content__tasklist-header');

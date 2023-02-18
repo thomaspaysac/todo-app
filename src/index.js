@@ -5,7 +5,8 @@ import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-f
 // Global variables
 const taskListsContainer = [];
 let newTask;
-
+let sortingOrderDeadlines;
+let sortingOrderPriority = false;
 
 // DOM Elements
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
@@ -23,14 +24,14 @@ const CapitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const UpdateInterface = (tasklist) => {
-  SortTasklist(tasklist);
-  loadTasklistDetails(tasklist);
+const UpdateInterface = (tasklist, sortingOrderDeadlines, sortingOrderPriority) => {
+  loadTasklistDetails(tasklist, sortingOrderDeadlines, sortingOrderPriority);
   createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
   deleteTask(); // Reload delete function for remaining tasks
   deleteTasklist(); // Reload delete tasklist function
   editTasklist(); // Reload edit function
   editTask();
+  SortTasklist(tasklist);
   displayController();
 };
 
@@ -354,19 +355,28 @@ const getDeadlines = (() => {
 
 // Change sort order when viewing tasklists
 const SortTasklist = (tasklist) => {
-  const sort_criteria = SORT_SELECT.value;
-  if (sort_criteria === 'deadline-asc') {
-    tasklist.content.sort( // Sort all tasks by ascending deadline
-    (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0);
-  } else if (sort_criteria === 'deadline-des') {
-    tasklist.content.sort( // Sort all tasks by descending deadline
-    (task1, task2) => (task1.deadline < task2.deadline) ? 1 : (task1.deadline > task2.deadline) ? -1 : 0);
-  } else if (sort_criteria === 'priority') {
+  const label_deadline = document.querySelector('.label-deadline');
+  const label_priority = document.querySelector('.label-priority');
+  label_deadline.addEventListener('click', () => {
+    sortingOrderPriority = false;
+    if (sortingOrderDeadlines === undefined || sortingOrderDeadlines === 'descending') {
+      sortingOrderDeadlines = 'ascending';
+      tasklist.content.sort( // Sort all tasks by ascending deadline
+        (task1, task2) => (task1.deadline > task2.deadline) ? 1 : (task1.deadline < task2.deadline) ? -1 : 0);
+      UpdateInterface(tasklist, sortingOrderDeadlines);
+    } else if (sortingOrderDeadlines === 'ascending') {
+      sortingOrderDeadlines = 'descending';
+      tasklist.content.sort( // Sort all tasks by descending deadline
+        (task1, task2) => (task1.deadline < task2.deadline) ? 1 : (task1.deadline > task2.deadline) ? -1 : 0);
+      UpdateInterface(tasklist, sortingOrderDeadlines);
+    }
+  });
+  label_priority.addEventListener('click', () => {
+    sortingOrderPriority = true;
+    sortingOrderDeadlines = undefined;
     tasklist.content.sort(
-    (task1, task2) => (task1.priority < task2.priority) ? 1 : (task1.priority > task2.priority) ? -1 : 0);
-  }
-  SORT_SELECT.addEventListener('click', () => { // Bugged, cause browser crash if used too often on the same tasklist
-    UpdateInterface(tasklist);
+      (task1, task2) => (task1.priority < task2.priority) ? 1 : (task1.priority > task2.priority) ? -1 : 0);
+    UpdateInterface(tasklist, sortingOrderDeadlines, sortingOrderPriority);
   });
 };
 

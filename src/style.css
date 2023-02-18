@@ -110,16 +110,6 @@ main {
     #add-task_form input[type="submit"]:active {
       transform: translateY(2px); }
 
-.sort-select__container {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 8px; }
-  .sort-select__container select {
-    background-color: #ccd2d4;
-    border-radius: 5px;
-    padding: 4px; }
-
 header {
   display: flex;
   height: 10vh;
@@ -282,7 +272,8 @@ header {
   .single-task__datas input[type="checkbox"] {
     margin: 0;
     height: 15px;
-    justify-self: start; }
+    justify-self: start;
+    background-color: red; }
   .single-task__datas :not(:nth-child(2)) {
     justify-self: center; }
 

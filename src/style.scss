@@ -152,19 +152,6 @@ main {
   }
 }
 
-.sort-select__container {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  gap: 8px;
-
-  select {
-    background-color: map-get($colors, main-light);
-    border-radius: 5px;
-    padding: 4px;
-  }
-}
-
 // Header
 header {
   display: flex;
@@ -377,6 +364,7 @@ header {
     margin: 0;
     height: 15px;
     justify-self: start;
+    background-color: red;
   }
 
   :not(:nth-child(2)) {
