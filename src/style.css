@@ -18,6 +18,12 @@ main {
 .note {
   font-style: italic; }
 
+input[type="color"] {
+  width: 30px;
+  height: 30px;
+  border-color: #344B52;
+  border-radius: 5px; }
+
 .backdrop {
   display: none;
   position: fixed;

@@ -28,6 +28,13 @@ main {
   font-style: italic;
 }
 
+input[type="color"] {
+  width: 30px;
+  height: 30px;
+  border-color: map-get($colors, main);
+  border-radius: 5px;
+}
+
 // Modals
 .backdrop {
   display: none;
@@ -231,7 +238,6 @@ header {
   border-radius: 50%;
   vertical-align: up;
   margin-left: 8px;
-  //outline: 2px solid map-get($colors, main-white);
 }
 
 .sidebar-category {

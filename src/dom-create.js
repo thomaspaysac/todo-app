@@ -14,15 +14,16 @@ const createTasklistContainer = (taskListsArray) => {
     const tasklist_block = document.createElement('li');
     tasklist_block.classList.add('sidebar-tasklist');
     sidebar_tasklists.appendChild(tasklist_block);
-    
     const tasklist_title = document.createElement('div');
     tasklist_title.classList.add('tasklist-title');
     tasklist_title.textContent = el.title;
     tasklist_block.appendChild(tasklist_title);
     const tasklist_color = document.createElement('div');
     tasklist_color.classList.add('sidebar__tasklist-color');
-    tasklist_color.style.backgroundColor = el.color;
-    tasklist_color.style.outline = '1px solid #efefef';
+    if (el.color !== undefined) {
+      tasklist_color.style.backgroundColor = el.color;
+      tasklist_color.style.outline = '1px solid #efefef';
+    }
     tasklist_title.appendChild(tasklist_color);
     (el.content).forEach(el => {
       const tasklist_content = document.createElement('ul');
