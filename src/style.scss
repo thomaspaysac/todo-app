@@ -21,7 +21,26 @@ body {
 
 main {
   display: flex;
-  height: 90vh;
+  height: 85vh;
+}
+
+footer {
+  height: 5%;
+  background-color: map-get($colors, main-black);
+  color: map-get($colors, main-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+
+  a {
+    text-decoration: none;
+    color: map-get($colors, main-white);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .note {
@@ -33,6 +52,11 @@ input[type="color"] {
   height: 30px;
   border-color: map-get($colors, main);
   border-radius: 5px;
+  border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 // Modals
@@ -353,6 +377,11 @@ header {
   :not(:nth-child(2)) {
     justify-self: center;
   }
+}
+
+.label-deadline:hover,
+.label-priority:hover {
+  cursor: pointer;
 }
 
 .single-task__container {

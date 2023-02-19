@@ -294,7 +294,7 @@ const getDeadlines = (() => {
         deadlineToday.push(task);
       }
     });
-    loadFiltersDetails('Next 24 hours', deadlineToday);
+    loadFiltersDetails('Next 24 hours', deadlineToday, taskListsContainer);
     LoadCheckboxes(deadlineToday);
     displayController();
   };
@@ -314,7 +314,7 @@ const getDeadlines = (() => {
         }
       }
     });
-    loadFiltersDetails('This week', deadlineWeek);
+    loadFiltersDetails('This week', deadlineWeek, taskListsContainer);
     LoadCheckboxes(deadlineWeek);
     displayController();
   };
@@ -333,7 +333,7 @@ const getDeadlines = (() => {
         }
       }
     });
-    loadFiltersDetails('This month', deadlineMonth);
+    loadFiltersDetails('This month', deadlineMonth, taskListsContainer);
     LoadCheckboxes(deadlineMonth);
     displayController();
   };
@@ -347,7 +347,7 @@ const getDeadlines = (() => {
         deadlineFurther.push(task);
       }
     });
-    loadFiltersDetails('Further...', deadlineFurther);
+    loadFiltersDetails('Further...', deadlineFurther, taskListsContainer);
     LoadCheckboxes(deadlineFurther);
     displayController();
   };
@@ -420,6 +420,8 @@ const further_filter_button = document.getElementById('deadline-further');
 further_filter_button.addEventListener('click', () => {
   getDeadlines.getFurther();
 });
+
+//Click on task name in deadlines view -> load corresponding tasklist content
 
 // When click on checkbox, find the right task and toggle 'checked'. Grey out the text.
 const LoadCheckboxes = (array) =>  {

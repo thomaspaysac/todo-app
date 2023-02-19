@@ -13,7 +13,21 @@ body {
 
 main {
   display: flex;
-  height: 90vh; }
+  height: 85vh; }
+
+footer {
+  height: 5%;
+  background-color: #232323;
+  color: #efefef;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; }
+  footer a {
+    text-decoration: none;
+    color: #efefef; }
+    footer a:hover {
+      text-decoration: underline; }
 
 .note {
   font-style: italic; }
@@ -22,7 +36,10 @@ input[type="color"] {
   width: 30px;
   height: 30px;
   border-color: #344B52;
-  border-radius: 5px; }
+  border-radius: 5px;
+  border: none; }
+  input[type="color"]:hover {
+    cursor: pointer; }
 
 .backdrop {
   display: none;
@@ -268,6 +285,10 @@ header {
   font-size: 0.9rem; }
   .data_legends :not(:nth-child(2)) {
     justify-self: center; }
+
+.label-deadline:hover,
+.label-priority:hover {
+  cursor: pointer; }
 
 .single-task__container {
   margin: 16px 0;
