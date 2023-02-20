@@ -33,6 +33,7 @@ const UpdateInterface = (tasklist, sortingOrderDeadlines, sortingOrderPriority) 
   editTask();
   SortTasklist(tasklist);
   displayController();
+  populateStorage();
 };
 
 // Factory function for creating new single tasks
@@ -102,9 +103,11 @@ const addTaskToTaskList = (newTask) => {
     (newTaskList.content).push(newTask);
     newTaskList.description = 'There is no description yet...';
     UpdateInterface(newTaskList);
+    populateStorage();
   } else {
     (targetTaskList.content).push(newTask); // Add to existing tasklist
     UpdateInterface(targetTaskList);
+    populateStorage();
   }
 };
 
@@ -128,6 +131,7 @@ const deleteTasklist = () => {
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
       displayController(); // Reload the click actions on sidebar tasklists
       resetContentContainer(); // Empty the content container
+      populateStorage();
       CloseModal();
     });
   }
@@ -439,18 +443,23 @@ const LoadCheckboxes = (array) =>  {
 
 // LOCAL STORAGE
 const populateStorage = () => {
-  localStorage.setItem('tasklists', taskListsContainer);
+  localStorage.savedTasklists = JSON.stringify(taskListsContainer);
 };
 
-const GetTasklistsContainer = () => {
-  taskListsContainer = localStorage.getItem('tasklists', taskListsContainer);
-  createTasklistContainer(taskListsContainer);
+const loadLocalStorage = () => {
+  if (JSON.parse(localStorage.savedTasklists).length !== 0) {
+  taskListsContainer = JSON.parse(localStorage.savedTasklists);
+  createTasklistContainer(JSON.parse(localStorage.savedTasklists));
+  } else {
+    return;
+  }
+  displayController();
 };
+
+loadLocalStorage();
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  localStorage.tasklists = JSON.stringify(taskListsContainer);
-  taskListsContainer = JSON.parse(localStorage.tasklists);
-  createTasklistContainer(taskListsContainer);
-  console.log(localStorage);
+  console.log(JSON.parse(localStorage.savedTasklists));
+  console.log(taskListsContainer);
 });
