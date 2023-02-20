@@ -195,6 +195,10 @@ header {
   display: flex;
   align-items: center;
   cursor: default;
+  
+  a {
+    text-decoration: none;
+  }
 
   h1 {
   font-family: 'Gamja Flower';
@@ -290,8 +294,7 @@ header {
 .sidebar-tasklist {
   margin-bottom: 8px;
   border-radius: 5px;
-
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -307,11 +310,11 @@ header {
   font-size: 0.9rem;
   font-style: italic;
   
-  li {
+  /*li {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-  }
+  }*/
 }
 
 // Main content style
@@ -473,6 +476,60 @@ header {
   :nth-child(4),
   :nth-child(5) {
     justify-self: center;
+  }
+}
+
+// USER GUIDE PAGE
+.user-guide__background {
+  background-color: map-get($colors, main-white);
+  padding: 50px;
+  height: 120%;
+}
+
+.tutorial-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  h2 {
+    align-self: center;
+    width: clamp(300px, 600px, 60%);
+    font-family: 'Gamja Flower';
+    font-size: 2rem;
+    text-align: center;
+    margin: 0;
+    background-color: map-get($colors, main);
+    color: map-get($colors, main-white);
+    border-radius: 5px;
+
+    .logo {
+      font-family: 'Gamja Flower';
+      font-size: 3rem;
+      vertical-align: baseline;
+    }
+  }
+}
+
+.tagline {
+  color: map-get($colors, main);
+  font-size: 1.5rem;
+}
+
+.tutorial-item {
+  background-color: map-get($colors, main-light);
+  width: 70%;
+  padding: 20px;
+  border-radius: 5px;
+
+  h3 {
+    margin-top: 0;
+    color: map-get($colors, main);
+  }
+
+  p {
+    color: map-get($colors, main-black);
+    margin: 8px 0;
   }
 }
 

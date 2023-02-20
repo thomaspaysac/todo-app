@@ -143,6 +143,8 @@ header {
   display: flex;
   align-items: center;
   cursor: default; }
+  .logo__container a {
+    text-decoration: none; }
   .logo__container h1 {
     font-family: 'Gamja Flower';
     margin: 0 0 0 20px;
@@ -217,7 +219,7 @@ header {
 .sidebar-tasklist {
   margin-bottom: 8px;
   border-radius: 5px;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
   text-overflow: ellipsis; }
   .sidebar-tasklist:hover, .sidebar-tasklist:active {
@@ -227,11 +229,12 @@ header {
 .tasklist-subtasks {
   color: #cccccc;
   font-size: 0.9rem;
-  font-style: italic; }
-  .tasklist-subtasks li {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
+  font-style: italic;
+  /*li {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+  }*/ }
 
 .content__container {
   background-color: #efefef;
@@ -355,6 +358,47 @@ header {
   .filtered-task__datas :nth-child(4),
   .filtered-task__datas :nth-child(5) {
     justify-self: center; }
+
+.user-guide__background {
+  background-color: #efefef;
+  padding: 50px;
+  height: 120%; }
+
+.tutorial-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; }
+  .tutorial-container h2 {
+    align-self: center;
+    width: clamp(300px, 600px, 60%);
+    font-family: 'Gamja Flower';
+    font-size: 2rem;
+    text-align: center;
+    margin: 0;
+    background-color: #344B52;
+    color: #efefef;
+    border-radius: 5px; }
+    .tutorial-container h2 .logo {
+      font-family: 'Gamja Flower';
+      font-size: 3rem;
+      vertical-align: baseline; }
+
+.tagline {
+  color: #344B52;
+  font-size: 1.5rem; }
+
+.tutorial-item {
+  background-color: #ccd2d4;
+  width: 70%;
+  padding: 20px;
+  border-radius: 5px; }
+  .tutorial-item h3 {
+    margin-top: 0;
+    color: #344B52; }
+  .tutorial-item p {
+    color: #232323;
+    margin: 8px 0; }
 
 /* width */
 ::-webkit-scrollbar {

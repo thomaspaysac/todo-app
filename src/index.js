@@ -64,6 +64,7 @@ const CloseModal = () => {
 BACKDROP.addEventListener('click', () => CloseModal());
 
 NEW_TASK_BUTTON.addEventListener('click', () => {
+  NEW_TASK_FORM.reset();
   OpenModal(NEW_TASK_MODAL);
 });
 
