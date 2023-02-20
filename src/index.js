@@ -3,7 +3,7 @@ import { createTasklistContainer, loadTasklistDetails, resetContentContainer, lo
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 
 // Global variables
-const taskListsContainer = [];
+let taskListsContainer = [];
 let newTask;
 let sortingOrderDeadlines;
 let sortingOrderPriority = false;
@@ -437,7 +437,20 @@ const LoadCheckboxes = (array) =>  {
   });
 };
 
+// LOCAL STORAGE
+const populateStorage = () => {
+  localStorage.setItem('tasklists', taskListsContainer);
+};
+
+const GetTasklistsContainer = () => {
+  taskListsContainer = localStorage.getItem('tasklists', taskListsContainer);
+  createTasklistContainer(taskListsContainer);
+};
+
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(taskListsContainer);
+  localStorage.tasklists = JSON.stringify(taskListsContainer);
+  taskListsContainer = JSON.parse(localStorage.tasklists);
+  createTasklistContainer(taskListsContainer);
+  console.log(localStorage);
 });

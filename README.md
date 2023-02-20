@@ -19,7 +19,8 @@ Along the course of the development, I found myself going outside the scope of t
 
 ### Features to come
 
-- Add local storage and network storage.
+- Add local storage and network storage ;
+- Empty form inputs when opening the new task modal.
 
 
 ### Developed with
