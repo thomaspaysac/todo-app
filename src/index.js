@@ -1,5 +1,5 @@
 import './style.css'; 
-import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide, loadEmptyMessage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 
 // Global variables
@@ -134,6 +134,9 @@ const deleteTasklist = () => {
       displayController(); // Reload the click actions on sidebar tasklists
       resetContentContainer(); // Empty the content container
       populateStorage();
+      if (taskListsContainer.length === 0) {
+        loadEmptyMessage();
+      }
       CloseModal();
     });
   }

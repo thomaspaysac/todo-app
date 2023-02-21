@@ -20,7 +20,6 @@ Along the course of the development, I found myself going outside the scope of t
 
 ### Features to come
 
-- Use natural date format for display ;
 - In deadline view, when clicking on a task, load the detailled tasklist view.
 
 

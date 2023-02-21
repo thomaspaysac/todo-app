@@ -1,4 +1,4 @@
-import { parseISO, formatDistanceToNow, isBefore } from 'date-fns';
+import { format, parseISO, formatDistanceToNow, isBefore } from 'date-fns';
 
 const sidebar_tasklists = document.querySelector('.sidebar-tasklists');
 const content_container = document.querySelector('.content-output');
@@ -125,7 +125,8 @@ const loadTasklistDetails = (tasklist, sortingOrderDeadlines, sortingOrderPriori
       if (task.deadline === '') {
         single_task_deadline.textContent = '-';
       } else {
-        single_task_deadline.textContent = task.deadline;
+        const display_date = parseISO(task.deadline);
+        single_task_deadline.textContent = format(display_date, 'dd.MM.yyyy');
       }
       single_task_datas.appendChild(single_task_deadline);
     const timeToDeadline = document.createElement('div');
@@ -222,7 +223,8 @@ const loadFiltersDetails = (filter, deadlineArray, taskListsContainer) => {
       filtered_task_datas.appendChild(filtered_task_title);
     const filtered_task_deadline = document.createElement('div');
       filtered_task_deadline.classList.add('filtered-task__deadline');
-      filtered_task_deadline.textContent = task.deadline;
+      const display_date = parseISO(task.deadline);
+      filtered_task_deadline.textContent = format(display_date, 'dd.MM.yyyy');
       filtered_task_datas.appendChild(filtered_task_deadline);
     const filtered_task_priority = document.createElement('div');
       filtered_task_priority.classList.add('filtered-task__priority');
@@ -269,4 +271,14 @@ const loadUserGuide = () => {
     user_guide_container.appendChild(organize_info);
 };
 
-export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadUserGuide };
+const loadEmptyMessage = () => {
+  const empty_message = document.createElement('div');
+  empty_message.style.display = 'flex';
+  empty_message.style.flexDirection = 'column';
+  empty_message.style.alignContent = 'center';
+  empty_message.style.fontSize = '1.2rem';
+  empty_message.innerHTML = `<p>There is nothing here.</p><p>← Use the sidebar to add new tasks.</p>`;
+  content_container.appendChild(empty_message);
+};
+
+export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadUserGuide, loadEmptyMessage };
