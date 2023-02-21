@@ -185,7 +185,7 @@ const loadFiltersDetails = (filter, deadlineArray, taskListsContainer) => {
   const empty_div = document.createElement('div');
     data_legends.appendChild(empty_div);
   const label_task = document.createElement('div');
-    label_task.textContent = 'Tasklist : Task';
+    label_task.textContent = 'Task list : Task';
     data_legends.appendChild(label_task);
   const label_deadline = document.createElement('div');
     label_deadline.textContent = 'Deadline ▲';
@@ -255,19 +255,19 @@ const loadUserGuide = () => {
     user_guide_container.appendChild(welcome_title);
   const tagline = document.createElement('div');
     tagline.classList.add('tagline');
-    tagline.textContent = 'toodoo. is a tasklists manager that is designed to be simple but functional.';
+    tagline.textContent = 'toodoo. is a task list manager that is designed to be simple but functional.';
     user_guide_container.appendChild(tagline);
   const create_info = document.createElement('div');
     create_info.classList.add('tutorial-item');
-    create_info.innerHTML = `<h3>Create</h3><p>When clicking the '+ New task' button on the homepage's sidebar, the new task form will open and let you enter the informations about the task.</p><p>If the tasklist name already exists, the new task will be added to it. Otherwise, a new tasklist with this name will be created and your new task will be directly added to it.</p>`;
+    create_info.innerHTML = `<h3>Create</h3><p>When clicking the '+ New task' button on the homepage's sidebar, the new task form will open and let you enter the information about the task.</p><p>If the task list name already exists, the new task will be added to it. Otherwise, a new task list with this name will be created, and your new task will be directly added to it.</p>`;
     user_guide_container.appendChild(create_info);
   const edit_info = document.createElement('div');
     edit_info.classList.add('tutorial-item');
-    edit_info.innerHTML = `<h3>Edit</h3> <p>When clicking on a tasklist in the sidebar, you will display its details. To edit a field, simply double-click on it.</p> <p>You can edit any information: name, description, deadline, priority, and you can even choose a color to make your tasklist unique and more visible in the 'Filter by deadline' view!</p> `;
+    edit_info.innerHTML = `<h3>Edit</h3> <p>When clicking on a task list in the sidebar, you will display its details. To edit a field, simply double-click on it.</p> <p>You can edit any information: name, description, deadline, priority, and you can even choose a color to make your task list unique and more visible in the 'Filter by deadline' view!</p> `;
     user_guide_container.append(edit_info);
   const organize_info = document.createElement('div');
     organize_info.classList.add('tutorial-item');
-    organize_info.innerHTML = `<h3>Organize</h3><p>In the detailled tasklist view, you can sort all your tasks by deadline or by priority.</p><p>You can also check all upcoming tasks by using the 'Filter by deadline' option in the sidebar.</p>`;
+    organize_info.innerHTML = `<h3>Organize</h3><p>In the detailed task list view, you can sort all your tasks by deadline or by priority.</p><p>You can also check all upcoming tasks by using the 'Filter by deadline' option in the sidebar.</p>`;
     user_guide_container.appendChild(organize_info);
 };
 
