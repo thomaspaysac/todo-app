@@ -162,6 +162,20 @@ header {
     color: #efefef;
     text-decoration: none; }
 
+.user-guide__button {
+  font-size: 1rem;
+  background-color: #efefef;
+  color: #344B52;
+  border: none;
+  border-radius: 3px;
+  padding: 8px; }
+  .user-guide__button:hover, .user-guide__button:active {
+    background-color: #344B52;
+    border: 1px solid #efefef;
+    color: #efefef;
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer; }
+
 .sidebar-icon {
   height: 1rem; }
 
@@ -386,7 +400,7 @@ header {
 
 .tagline {
   color: #344B52;
-  font-size: 1.5rem; }
+  font-size: 1.2rem; }
 
 .tutorial-item {
   background-color: #ccd2d4;

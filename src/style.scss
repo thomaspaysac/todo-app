@@ -222,6 +222,24 @@ header {
   }
 }
 
+.user-guide__button {
+  font-size: 1rem;
+  background-color: map-get($colors, main-white);
+  color: map-get($colors, main);
+  border: none;
+  border-radius: 3px;
+  padding: 8px;
+
+  &:hover,
+  &:active {
+    background-color: map-get($colors, main);
+    border: 1px solid map-get($colors, main-white);
+    color: map-get($colors, main-white);
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer;
+  }
+}
+
 // Sidebar style
 .sidebar-icon {
   height: 1rem;
@@ -513,7 +531,7 @@ header {
 
 .tagline {
   color: map-get($colors, main);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .tutorial-item {

@@ -1,5 +1,5 @@
-import './style.css';
-import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails } from './dom-create.js';
+import './style.css'; 
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 
 // Global variables
@@ -15,6 +15,7 @@ const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
+const USER_GUIDE_BUTTON = document.querySelector('.user-guide__button');
 const SORT_SELECT = document.getElementById('sort-select');
 const CONTENT_OUTPUT = document.querySelector('.content-output');
 
@@ -442,6 +443,10 @@ const LoadCheckboxes = (array) =>  {
   });
 };
 
+USER_GUIDE_BUTTON.addEventListener('click', () => {
+  loadUserGuide();
+});
+
 // LOCAL STORAGE
 const populateStorage = () => {
   localStorage.savedTasklists = JSON.stringify(taskListsContainer);
@@ -452,7 +457,7 @@ const loadLocalStorage = () => {
   taskListsContainer = JSON.parse(localStorage.savedTasklists);
   createTasklistContainer(JSON.parse(localStorage.savedTasklists));
   } else {
-    return;
+    loadUserGuide();
   }
   displayController();
 };
@@ -461,6 +466,6 @@ loadLocalStorage();
 
 // Test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(JSON.parse(localStorage.savedTasklists));
-  console.log(taskListsContainer);
+  const logo_container = document.querySelector('.logo__container');
+  console.log(logo_container.innerHTML);
 });
