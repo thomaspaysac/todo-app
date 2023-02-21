@@ -20,7 +20,8 @@ Along the course of the development, I found myself going outside the scope of t
 
 ### Features to come
 
-- In deadline view, when clicking on a task, load the detailled tasklist view.
+- In deadline view, when clicking on a task, load the detailled tasklist view ;
+- Make design responsive for smartphone use.
 
 
 ### Developed with
