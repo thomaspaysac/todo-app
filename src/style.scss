@@ -223,6 +223,7 @@ header {
 }
 
 .user-guide__button {
+  font-weight: 700;
   font-size: 1rem;
   background-color: map-get($colors, main-white);
   color: map-get($colors, main);
