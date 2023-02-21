@@ -1,5 +1,6 @@
 # toodoo. - The simple tasklist web application
 
+![toodoo logo](./dist/images/readme/Sans%20titre.png)
 ### Introduction
 
 This project started as an exercise for [The Odin Project](https://www.theodinproject.com/).
@@ -14,13 +15,12 @@ Along the course of the development, I found myself going outside the scope of t
 - Each tasklist is displayed separately so as to keep the interface clean ;
 - Tasks in tasklist view can be sorted by deadlines (ascending or descending) or by priority ;
 - Tasklists can be customized with a color to enhance the visibility in deadlines view ;
-- All tasks can be browsed by their deadline.
+- All tasks can be browsed by their deadline ;
+- Local storage.
 
 
 ### Features to come
 
-- Add local storage and network storage ;
-- Empty form inputs when opening the new task modal.
 - Use natural date format for display ;
 - In deadline view, when clicking on a task, load the detailled tasklist view.
 
