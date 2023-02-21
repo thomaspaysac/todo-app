@@ -1,6 +1,5 @@
 # toodoo. - The simple tasklist web application
 
-![toodoo logo](./dist/images/readme/Sans%20titre.png)
 ### Introduction
 
 This project started as an exercise for [The Odin Project](https://www.theodinproject.com/).
