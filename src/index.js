@@ -468,7 +468,7 @@ const loadLocalStorage = () => {
 loadLocalStorage();
 
 // Test purpose
-TEST_BUTTON.addEventListener('click', () => {
+/*TEST_BUTTON.addEventListener('click', () => {
   const logo_container = document.querySelector('.logo__container');
   console.log(logo_container.innerHTML);
-});
+});*/
