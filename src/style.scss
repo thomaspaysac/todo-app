@@ -349,7 +349,12 @@ header {
   justify-content: center;
   align-items: center;
   gap: 16px;
-  color: map-get($colors, main)
+  color: map-get($colors, main);
+
+  img {
+    margin: 24px;
+    max-height: 200px;
+  }
 }
 
 .welcome-message__title {

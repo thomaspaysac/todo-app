@@ -264,6 +264,9 @@ header {
   align-items: center;
   gap: 16px;
   color: #344B52; }
+  .welcome-message__container img {
+    margin: 24px;
+    max-height: 200px; }
 
 .welcome-message__title {
   font-family: 'Gamja Flower', sans-serif;
