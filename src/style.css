@@ -244,12 +244,7 @@ header {
 .tasklist-subtasks {
   color: #cccccc;
   font-size: 0.9rem;
-  font-style: italic;
-  /*li {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }*/ }
+  font-style: italic; }
 
 .content__container {
   background-color: #efefef;
@@ -257,6 +252,25 @@ header {
   width: 100%;
   padding: 20px;
   overflow-y: scroll; }
+
+.content-output {
+  height: 100%; }
+
+.welcome-message__container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  color: #344B52; }
+
+.welcome-message__title {
+  font-family: 'Gamja Flower', sans-serif;
+  font-size: 4rem; }
+
+.welcome-message {
+  font-size: 1.6rem; }
 
 .content__tasklist-header {
   display: flex;

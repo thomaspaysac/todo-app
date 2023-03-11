@@ -327,12 +327,6 @@ header {
   color: #cccccc;
   font-size: 0.9rem;
   font-style: italic;
-  
-  /*li {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-  }*/
 }
 
 // Main content style
@@ -342,6 +336,29 @@ header {
   width: 100%;
   padding: 20px;
   overflow-y: scroll;
+}
+
+.content-output {
+  height: 100%;
+}
+
+.welcome-message__container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  color: map-get($colors, main)
+}
+
+.welcome-message__title {
+  font-family: 'Gamja Flower', sans-serif;
+  font-size: 4rem;
+}
+
+.welcome-message {
+  font-size: 1.6rem;
 }
 
 .content__tasklist-header {

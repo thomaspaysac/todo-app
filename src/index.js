@@ -9,15 +9,12 @@ let sortingOrderDeadlines;
 let sortingOrderPriority = false;
 
 // DOM Elements
-const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 const NEW_TASK_FORM = document.getElementById('add-task_form');
 const NEW_TASK_BUTTON = document.querySelector('.new-task__button');
 const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 const USER_GUIDE_BUTTON = document.querySelector('.user-guide__button');
-const SORT_SELECT = document.getElementById('sort-select');
-const CONTENT_OUTPUT = document.querySelector('.content-output');
 
 
 // GENERAL FUNCTIONS
@@ -468,7 +465,8 @@ const loadLocalStorage = () => {
 loadLocalStorage();
 
 // Test purpose
-/*TEST_BUTTON.addEventListener('click', () => {
+/*const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
+TEST_BUTTON.addEventListener('click', () => {
   const logo_container = document.querySelector('.logo__container');
   console.log(logo_container.innerHTML);
 });*/

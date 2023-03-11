@@ -267,7 +267,7 @@ const loadUserGuide = () => {
     user_guide_container.append(edit_info);
   const organize_info = document.createElement('div');
     organize_info.classList.add('tutorial-item');
-    organize_info.innerHTML = `<h3>Organize</h3><p>In the detailed task list view, you can sort all your tasks by deadline or by priority.</p><p>You can also check all upcoming tasks by using the 'Filter by deadline' option in the sidebar.</p>`;
+    organize_info.innerHTML = `<h3>Organize</h3><p>In the detailed task list view, you can sort all your tasks by deadline or by priority by clicking on their respective label.</p><p>You can also check all upcoming tasks by using the 'Filter by deadline' option in the sidebar.</p>`;
     user_guide_container.appendChild(organize_info);
 };
 
