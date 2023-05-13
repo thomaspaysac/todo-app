@@ -1,6 +1,7 @@
 import './style.css'; 
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide, loadEmptyMessage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
+import { db } from './firebase';
 
 // Global variables
 let taskListsContainer = [];
@@ -464,9 +465,11 @@ const loadLocalStorage = () => {
 
 loadLocalStorage();
 
+// CLOUD FIRESTORE
+
+
 // Test purpose
-/*const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
+const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  const logo_container = document.querySelector('.logo__container');
-  console.log(logo_container.innerHTML);
-});*/
+  alert("hello")
+});
