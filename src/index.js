@@ -1,6 +1,16 @@
 import './style.css'; 
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide, loadEmptyMessage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
+
 import { db } from './firebase';
 
 // Global variables
@@ -465,11 +475,48 @@ const loadLocalStorage = () => {
 
 loadLocalStorage();
 
-// CLOUD FIRESTORE
+// FIREBASE
+const signupForm = document.getElementById('signup-form');
+const auth = getAuth();
+signupForm.addEventListener('submit', (e)=> {
+  e.preventDefault;
+  const formData = new FormData(signupForm);
+  const signupData = Object.fromEntries(formData);
+  createUserWithEmailAndPassword(auth, signupData.email, signupData.password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+})
 
+const googleSignin= document.getElementById('google-signin');
+googleSignin.addEventListener('click', signIn);
+async function signIn() {
+  // Sign in Firebase using popup auth and Google as the identity provider.
+  var provider = new GoogleAuthProvider();
+  await signInWithPopup(getAuth(), provider);
+}
+
+
+
+
+
+
+async function getStorage(db) {
+  const tasksCol = collection(db, 'tasks');
+  const tasksSnapshot = await getDocs(tasksCol);
+  const storedTasklists = tasksSnapshot.docs.map(doc => doc.data);
+  return storedTasklists;
+}
 
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  alert("hello")
+  getStorage(db);
 });
