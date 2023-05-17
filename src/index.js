@@ -51,7 +51,6 @@ const USER_GUIDE_BUTTON = document.querySelector('.user-guide__button');
 // GENERAL FUNCTIONS
 initFirebaseAuth();
 
-
 const CapitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -509,6 +508,16 @@ const loadLocalStorage = () => {
 
 loadLocalStorage();
 
+/*const loadCloudStorage = () => {
+  loadFromDB().then(function(result) {
+    taskListsContainer = JSON.parse(result);
+    createTasklistContainer(taskListsContainer);
+    displayController();
+  });
+}
+
+loadCloudStorage();*/
+
 // FIREBASE
 
 signInButtonElement.addEventListener('click', () => signIn());
@@ -595,10 +604,20 @@ async function loadFromDB() {
   }
 }
 
-function loadUserData () {
+function updateTasklistsContainer () {
+  taskListsContainer = [];
+  loadFromDB().then(function(result) {
+    taskListsContainer = JSON.parse(result);
+    createTasklistContainer(taskListsContainer);
+    displayController();
+  });
+}
+
+function convertUserData () {
   loadFromDB().then(function(result) {
     const userData = JSON.parse(result);
     console.log(userData);
+    return userData;
   });
 }
 
@@ -606,6 +625,5 @@ function loadUserData () {
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  taskListsContainer = loadUserData();
-  console.log(taskListsContainer);
+  updateTasklistsContainer();
 });
