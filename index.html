@@ -81,16 +81,17 @@
       <h1>toodoo<span style="color:#d4d0af">.</style></h1>
     </a></div>
     <div class="header__container">
-      <button id="google-signin">Sign in</button>
-      <div class="signup-div">
-        <form id="signup-form">
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email">
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password">
-          <input type="submit" id="signup-submit" value="Sign up">
-        </form>
+      <div id="user-container">
+        <div hidden id="user-pic"></div>
+        <div hidden id="user-name"></div>
+        <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+          Sign-out
+        </button>
+        <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
+          <i class="material-icons">account_circle</i>Sign-in with Google
+        </button>
       </div>
+
       <button class="user-guide__button">User guide</button>
     </div>
   </header>
