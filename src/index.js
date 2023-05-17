@@ -606,10 +606,6 @@ function loadUserData () {
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  loadUserData();
+  taskListsContainer = loadUserData();
+  console.log(taskListsContainer);
 });
-
-
-// Sort tasks into tasklists => create tasklists objects
-// Fill tasklists with tasks
-// Reload content with tasks
