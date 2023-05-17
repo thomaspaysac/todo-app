@@ -1,7 +1,21 @@
 import './style.css'; 
 import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide, loadEmptyMessage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+  doc,
+  getDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
+
 import {
   getAuth,
   onAuthStateChanged,
@@ -10,8 +24,14 @@ import {
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
-
+import { getStorage, ref } from "firebase/storage";
 import { db } from './firebase';
+
+const userPicElement = document.getElementById('user-pic');
+const userNameElement = document.getElementById('user-name');
+const signInButtonElement = document.getElementById('sign-in');
+const signOutButtonElement = document.getElementById('sign-out');
+
 
 // Global variables
 let taskListsContainer = [];
@@ -29,6 +49,9 @@ const USER_GUIDE_BUTTON = document.querySelector('.user-guide__button');
 
 
 // GENERAL FUNCTIONS
+initFirebaseAuth();
+
+
 const CapitalizeString = (string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
@@ -99,6 +122,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   const checked = false;
   newTask = Task(title, description, deadline, priority, tasklist, checked);
   addTaskToTaskList(newTask);
+  updateDB();
   CloseModal();
   });
 })();
@@ -136,6 +160,7 @@ const deleteTasklist = () => {
       for (let i = 0; i < taskListsContainer.length; i++) { 
         if (taskListsContainer[i] === targetTaskList) { 
           taskListsContainer.splice(i, 1);
+          updateDB();
         }
       }
       createTasklistContainer(taskListsContainer); // Update the sidebar tasklists
@@ -159,6 +184,7 @@ const deleteTask = () => {
   for (let i = 0; i < REMOVE_TASK_BTN.length; i ++) {
     REMOVE_TASK_BTN[i].addEventListener('click', () => {
       targetTaskList.content.splice(i, 1);
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   }
@@ -180,6 +206,7 @@ const editTasklist = () => {
     targetTaskList.content.forEach(task => {
       task.tasklist = targetTaskList.title;
     });
+    updateDB();
     UpdateInterface(targetTaskList);
   });
 
@@ -189,11 +216,13 @@ const editTasklist = () => {
   TASKLIST_DESCRIPTION_ELEMENT.addEventListener('blur', () => {
     TASKLIST_DESCRIPTION_ELEMENT.contentEditable = 'false';
     targetTaskList.description = TASKLIST_DESCRIPTION_ELEMENT.textContent;
+    updateDB();
     UpdateInterface(targetTaskList);
   });
 
   TASKLIST_COLOR_PICKER.addEventListener('blur', () => {
     targetTaskList.color = TASKLIST_COLOR_PICKER.value;
+    updateDB();
     UpdateInterface(targetTaskList);
   });
 };
@@ -214,6 +243,7 @@ const editTask = () => { // Live edit of a single task
       } else if (!el.checked) {
         targetTask[i].checked = false;
       }
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   });
@@ -227,6 +257,7 @@ const editTask = () => { // Live edit of a single task
     SINGLE_TASK_TITLE[i].addEventListener('blur', () => {
       SINGLE_TASK_TITLE[i].contentEditable = 'false';
       targetTask[i].title = SINGLE_TASK_TITLE[i].textContent;
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   }
@@ -240,6 +271,7 @@ const editTask = () => { // Live edit of a single task
     SINGLE_TASK_DESCRIPTION[i].addEventListener('blur', () => {
       SINGLE_TASK_DESCRIPTION.contentEditable = 'false';
       targetTask[i].description = SINGLE_TASK_DESCRIPTION[i].textContent;
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   }
@@ -256,6 +288,7 @@ const editTask = () => { // Live edit of a single task
     editableDeadline.addEventListener('blur', () => {
       editableDeadline.replaceWith(SINGLE_TASK_DEADLINE[i]);
       targetTask[i].deadline = editableDeadline.value;
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   }
@@ -274,6 +307,7 @@ const editTask = () => { // Live edit of a single task
     editablePriority.addEventListener('blur', () => {
       targetTask[i].priority = editablePriority.value;
       editablePriority.replaceWith(SINGLE_TASK_PRIORITY[i]);
+      updateDB();
       UpdateInterface(targetTaskList);
     });
   });
@@ -476,47 +510,106 @@ const loadLocalStorage = () => {
 loadLocalStorage();
 
 // FIREBASE
-const signupForm = document.getElementById('signup-form');
-const auth = getAuth();
-signupForm.addEventListener('submit', (e)=> {
-  e.preventDefault;
-  const formData = new FormData(signupForm);
-  const signupData = Object.fromEntries(formData);
-  createUserWithEmailAndPassword(auth, signupData.email, signupData.password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
-})
 
-const googleSignin= document.getElementById('google-signin');
-googleSignin.addEventListener('click', signIn);
+signInButtonElement.addEventListener('click', () => signIn());
+signOutButtonElement.addEventListener('click', () => signOutUser());
+
+
 async function signIn() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new GoogleAuthProvider();
   await signInWithPopup(getAuth(), provider);
 }
 
-
-
-
-
-
-async function getStorage(db) {
-  const tasksCol = collection(db, 'tasks');
-  const tasksSnapshot = await getDocs(tasksCol);
-  const storedTasklists = tasksSnapshot.docs.map(doc => doc.data);
-  return storedTasklists;
+function signOutUser() {
+  signOut(getAuth());
 }
+
+function initFirebaseAuth() {
+  // Listen to auth state changes.
+  onAuthStateChanged(getAuth(), authStateObserver);
+}
+
+function authStateObserver(user) {
+  if (user) { // User is signed in!
+    // Get the signed-in user's profile pic and name.
+    const profilePicUrl = getProfilePicUrl();
+    const userName = getUserName();
+
+    // Set the user's profile pic and name.
+    //userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
+    //userNameElement.textContent = userName;
+
+    // Show user's profile and sign-out button.
+    userNameElement.removeAttribute('hidden');
+    userPicElement.removeAttribute('hidden');
+    signOutButtonElement.removeAttribute('hidden');
+
+    // Hide sign-in button.
+    signInButtonElement.setAttribute('hidden', 'true');
+  } else { // User is signed out!
+    // Hide user's profile and sign-out button.
+    userNameElement.setAttribute('hidden', 'true');
+    userPicElement.setAttribute('hidden', 'true');
+    signOutButtonElement.setAttribute('hidden', 'true');
+
+    // Show sign-in button.
+    signInButtonElement.removeAttribute('hidden');
+  }
+}
+
+
+// Returns true if a user is signed-in.
+function isUserSignedIn() {
+  return !!getAuth().currentUser;
+}
+
+function getUserName() {
+  return getAuth().currentUser.displayName;
+}
+
+function getProfilePicUrl() {
+  return getAuth().currentUser.photoURL;
+}
+
+async function updateDB() {
+  const cloudTasklists = JSON.stringify(taskListsContainer);
+  try {
+    await setDoc(doc(getFirestore(), getUserName(), 'tasklists'), {
+      tasklists: cloudTasklists,
+    });    
+  }
+  catch(error) {
+    console.error('Error writing new task to Firebase Database', error);
+  }
+}
+
+async function loadFromDB() {
+  const docRef = doc(getFirestore(), getUserName(), 'tasklists');
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const userData = docSnap.data();
+    return userData.tasklists;
+  } else {
+    console.log("No such document!");
+  }
+}
+
+function loadUserData () {
+  loadFromDB().then(function(result) {
+    const userData = JSON.parse(result);
+    console.log(userData);
+  });
+}
+
 
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  getStorage(db);
+  loadUserData();
 });
+
+
+// Sort tasks into tasklists => create tasklists objects
+// Fill tasklists with tasks
+// Reload content with tasks
