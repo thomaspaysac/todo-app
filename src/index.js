@@ -1,5 +1,5 @@
 import './style.css'; 
-import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadUserGuide, loadEmptyMessage } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 import {
   getFirestore,
@@ -126,7 +126,7 @@ const getFormData = (() => {NEW_TASK_FORM.addEventListener('submit', (e) => {
   });
 })();
 
-// Add the newTask to its task list if it exist, create one if it doesnt
+// Add the newTask to its task list if it exist, create one if it doesn't
 const addTaskToTaskList = (newTask) => {
   // If the tasklist title is already in the database, this will return the tasklist object. Otherwise, returns undefined
   const targetTaskList = taskListsContainer.find(({ title }) => title === newTask.tasklist);
@@ -544,6 +544,8 @@ function authStateObserver(user) {
     // Get the signed-in user's profile pic and name.
     const profilePicUrl = getProfilePicUrl();
     const userName = getUserName();
+    updateTasklistsContainer();
+    loadHomePage();
 
     // Set the user's profile pic and name.
     //userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
@@ -557,6 +559,8 @@ function authStateObserver(user) {
     // Hide sign-in button.
     signInButtonElement.setAttribute('hidden', 'true');
   } else { // User is signed out!
+    clearTaskListOnUserChange();
+    loadUserGuide();
     // Hide user's profile and sign-out button.
     userNameElement.setAttribute('hidden', 'true');
     userPicElement.setAttribute('hidden', 'true');
@@ -577,6 +581,10 @@ function getUserName() {
   return getAuth().currentUser.displayName;
 }
 
+function getUserToken () {
+  return getAuth().currentUser.accessToken;
+}
+
 function getProfilePicUrl() {
   return getAuth().currentUser.photoURL;
 }
@@ -594,7 +602,8 @@ async function updateDB() {
 }
 
 async function loadFromDB() {
-  const docRef = doc(getFirestore(), getUserName(), 'tasklists');
+  const userName = getUserName();
+  const docRef = doc(getFirestore(), userName, 'tasklists');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const userData = docSnap.data();
@@ -605,6 +614,9 @@ async function loadFromDB() {
 }
 
 function updateTasklistsContainer () {
+  if (!isUserSignedIn) {
+    taskListsContainer = [];
+  }
   taskListsContainer = [];
   loadFromDB().then(function(result) {
     taskListsContainer = JSON.parse(result);
@@ -613,12 +625,10 @@ function updateTasklistsContainer () {
   });
 }
 
-function convertUserData () {
-  loadFromDB().then(function(result) {
-    const userData = JSON.parse(result);
-    console.log(userData);
-    return userData;
-  });
+function clearTaskListOnUserChange () {
+  taskListsContainer = [];
+  createTasklistContainer(taskListsContainer);
+  displayController();
 }
 
 
@@ -627,3 +637,20 @@ const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
   updateTasklistsContainer();
 });
+
+clearTaskListOnUserChange();
+if (isUserSignedIn) {
+  setTimeout(() => {
+    updateTasklistsContainer();
+  }, '1000')
+}
+
+
+// Problème : getUserName() n'a pas le temps de s'exécuter avant updateTaskListsContainer, et ce n'est pas une promise donc
+// pas possible d'utiliser async/await.
+// Solution 1 (mauvaise) : utiliser un timeout pour laisser le temps à getUserName() de se terminer
+// Solution 2 ? créer une copie async de getUserName() pour utiliser seulement dans cette situation
+
+// A faire : 
+// - afficher invite de connexion si pas connecté et après déconnexion
+// - remplacer userName par userToken pour accéder aux données

@@ -244,6 +244,25 @@ const loadFiltersDetails = (filter, deadlineArray, taskListsContainer) => {
   });
 };
 
+const loadHomePage = () => {
+  content_container.textContent = '';
+  const welcome_container = document.createElement('div');
+    welcome_container.classList.add('welcome-message__container');
+    content_container.appendChild(welcome_container);
+  const welcome_title = document.createElement('div');
+    welcome_title.classList.add('welcome-message__title');
+    welcome_title.textContent = 'Welcome!';
+    welcome_container.appendChild(welcome_title);
+  const welcome_message = document.createElement('div');
+    welcome_message.classList.add('welcome-message');
+    welcome_message.textContent = 'Choose a task list or select a deadline to continue.';
+    welcome_container.appendChild(welcome_message);
+  const welcome_image = document.createElement('img');
+    welcome_image.src = './images/welcome-image.svg';
+    welcome_image.classList.add('welcome-image');
+    welcome_container.appendChild(welcome_image);
+}
+
 const loadUserGuide = () => {
   content_container.textContent = '';
   const user_guide_container = document.createElement('div');
@@ -281,4 +300,4 @@ const loadEmptyMessage = () => {
   content_container.appendChild(empty_message);
 };
 
-export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadUserGuide, loadEmptyMessage };
+export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage };
