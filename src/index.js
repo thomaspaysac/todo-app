@@ -582,7 +582,7 @@ function getUserName() {
 }
 
 function getUserToken () {
-  return getAuth().currentUser.accessToken;
+  return getAuth().currentUser.email;
 }
 
 function getProfilePicUrl() {
@@ -592,7 +592,7 @@ function getProfilePicUrl() {
 async function updateDB() {
   const cloudTasklists = JSON.stringify(taskListsContainer);
   try {
-    await setDoc(doc(getFirestore(), getUserName(), 'tasklists'), {
+    await setDoc(doc(getFirestore(), getUserToken(), 'tasklists'), {
       tasklists: cloudTasklists,
     });    
   }
@@ -602,8 +602,7 @@ async function updateDB() {
 }
 
 async function loadFromDB() {
-  const userName = getUserName();
-  const docRef = doc(getFirestore(), userName, 'tasklists');
+  const docRef = doc(getFirestore(), getUserToken(), 'tasklists');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const userData = docSnap.data();
@@ -635,7 +634,7 @@ function clearTaskListOnUserChange () {
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  updateTasklistsContainer();
+  console.log(getAuth().currentUser);
 });
 
 clearTaskListOnUserChange();
@@ -653,4 +652,5 @@ if (isUserSignedIn) {
 
 // A faire : 
 // - afficher invite de connexion si pas connecté et après déconnexion
-// - remplacer userName par userToken pour accéder aux données
+// - styliser boutons de connexions, ajouter email + mdp
+// - corriger messages d'erreur
