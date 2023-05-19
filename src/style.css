@@ -104,6 +104,62 @@ input[type="color"] {
 .edit-task__modal {
   display: none; }
 
+#user-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 16px; }
+  #user-container #user-name {
+    color: #efefef;
+    font-weight: 700; }
+  #user-container img {
+    height: 20px;
+    width: 20px; }
+
+#sign-in {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  background-color: #E87461;
+  color: #efefef;
+  border: none;
+  border-radius: 3px;
+  font-size: 1.1rem;
+  padding: 12px; }
+  #sign-in #login-icon {
+    height: 20px;
+    width: 20px;
+    background-image: url("../dist/images/login.png");
+    background-size: contain; }
+  #sign-in:hover, #sign-in:active {
+    background-color: #efefef;
+    border: 1px solid #E87461;
+    color: #E87461;
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer; }
+    #sign-in:hover #login-icon, #sign-in:active #login-icon {
+      background-image: url("../dist/images/login-hover.png"); }
+
+#sign-out {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  background-color: #efefef;
+  color: #344B52;
+  border: none;
+  border-radius: 3px;
+  padding: 8px; }
+  #sign-out:hover, #sign-out:active {
+    background-color: #344B52;
+    border: 1px solid #efefef;
+    color: #efefef;
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer; }
+
 #add-task_form {
   display: flex;
   display: flex;
@@ -163,7 +219,6 @@ header {
     text-decoration: none; }
 
 .user-guide__button {
-  font-weight: 700;
   font-size: 1rem;
   background-color: #efefef;
   color: #344B52;

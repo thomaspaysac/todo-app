@@ -549,25 +549,25 @@ function authStateObserver(user) {
 
     // Set the user's profile pic and name.
     //userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
-    //userNameElement.textContent = userName;
+    userNameElement.textContent = userName;
 
     // Show user's profile and sign-out button.
     userNameElement.removeAttribute('hidden');
     userPicElement.removeAttribute('hidden');
-    signOutButtonElement.removeAttribute('hidden');
+    signOutButtonElement.style.display = 'flex';
 
     // Hide sign-in button.
-    signInButtonElement.setAttribute('hidden', 'true');
+    signInButtonElement.style.display = 'none';
   } else { // User is signed out!
     clearTaskListOnUserChange();
     loadUserGuide();
     // Hide user's profile and sign-out button.
     userNameElement.setAttribute('hidden', 'true');
     userPicElement.setAttribute('hidden', 'true');
-    signOutButtonElement.setAttribute('hidden', 'true');
+    signOutButtonElement.style.display = 'none';
 
     // Show sign-in button.
-    signInButtonElement.removeAttribute('hidden');
+    signInButtonElement.style.display = 'flex';
   }
 }
 

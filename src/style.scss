@@ -141,6 +141,82 @@ input[type="color"] {
   display: none;
 }
 
+// User container
+#user-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 16px;
+
+  #user-name {
+    color: #efefef;
+    font-weight: 700;
+  }
+
+  img {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+#sign-in {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  background-color: #E87461;
+  color: map-get($colors, main-white);
+  border: none;
+  border-radius: 3px;
+  font-size: 1.1rem;
+  padding: 12px;
+
+  #login-icon {
+    height: 20px;
+    width: 20px;
+    background-image: url('../dist/images/login.png');
+    background-size: contain;
+  }
+
+  &:hover,
+  &:active {
+    background-color: map-get($colors, main-white);
+    border: 1px solid #E87461;
+    color: #E87461;
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer;
+
+    #login-icon {
+      background-image: url('../dist/images/login-hover.png');
+    }
+  }
+}
+
+
+
+#sign-out {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  background-color: map-get($colors, main-white);
+  color: map-get($colors, main);
+  border: none;
+  border-radius: 3px;
+  padding: 8px;
+
+  &:hover,
+  &:active {
+    background-color: map-get($colors, main);
+    border: 1px solid map-get($colors, main-white);
+    color: map-get($colors, main-white);
+    box-shadow: 2px 2px 5px #2323237d;
+    cursor: pointer;
+  }
+}
+
 // Forms
 #add-task_form {
   display: flex;
@@ -222,7 +298,6 @@ header {
 }
 
 .user-guide__button {
-  font-weight: 700;
   font-size: 1rem;
   background-color: map-get($colors, main-white);
   color: map-get($colors, main);
