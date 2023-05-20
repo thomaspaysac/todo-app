@@ -1,5 +1,5 @@
 import './style.css'; 
-import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage } from './dom-create.js';
+import { createTasklistContainer, loadTasklistDetails, resetContentContainer, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage, loadLoginPage } from './dom-create.js';
 import { format, parseISO, formatDistanceToNow, isBefore, isEqual } from 'date-fns';
 import {
   getFirestore,
@@ -21,6 +21,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from 'firebase/auth';
@@ -46,6 +47,7 @@ const BACKDROP = document.querySelector('.backdrop');
 const NEW_TASK_MODAL = document.querySelector('.add-task__modal');
 const REMOVE_TASKLIST_MODAL = document.querySelector('.remove-tasklist__modal');
 const USER_GUIDE_BUTTON = document.querySelector('.user-guide__button');
+const LOADING_SCREEN = document.querySelector('.loading-screen');
 
 
 // GENERAL FUNCTIONS
@@ -542,10 +544,18 @@ function initFirebaseAuth() {
 function authStateObserver(user) {
   if (user) { // User is signed in!
     // Get the signed-in user's profile pic and name.
+    setTimeout(() => {
+      updateTasklistsContainer();
+    }, '1000')
+    NEW_TASK_BUTTON.removeAttribute('disabled');
     const profilePicUrl = getProfilePicUrl();
     const userName = getUserName();
     updateTasklistsContainer();
-    loadHomePage();
+    if (!taskListsContainer.length) {
+      loadEmptyMessage();
+    } else {
+      loadHomePage();
+    }
 
     // Set the user's profile pic and name.
     //userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
@@ -560,7 +570,8 @@ function authStateObserver(user) {
     signInButtonElement.style.display = 'none';
   } else { // User is signed out!
     clearTaskListOnUserChange();
-    loadUserGuide();
+    NEW_TASK_BUTTON.setAttribute('disabled', '');
+    loadLoginPage();
     // Hide user's profile and sign-out button.
     userNameElement.setAttribute('hidden', 'true');
     userPicElement.setAttribute('hidden', 'true');
@@ -582,7 +593,7 @@ function getUserName() {
 }
 
 function getUserToken () {
-  return getAuth().currentUser.email;
+  return getAuth().currentUser.uid;
 }
 
 function getProfilePicUrl() {
@@ -602,10 +613,12 @@ async function updateDB() {
 }
 
 async function loadFromDB() {
+  LOADING_SCREEN.style.display = 'flex';
   const docRef = doc(getFirestore(), getUserToken(), 'tasklists');
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const userData = docSnap.data();
+    LOADING_SCREEN.style.display = 'none';
     return userData.tasklists;
   } else {
     console.log("No such document!");
@@ -634,15 +647,10 @@ function clearTaskListOnUserChange () {
 // Test purpose
 const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(getAuth().currentUser);
+  console.log(getAuth().currentUser.uid);
 });
 
 clearTaskListOnUserChange();
-if (isUserSignedIn) {
-  setTimeout(() => {
-    updateTasklistsContainer();
-  }, '1000')
-}
 
 
 // Problème : getUserName() n'a pas le temps de s'exécuter avant updateTaskListsContainer, et ce n'est pas une promise donc
@@ -651,6 +659,6 @@ if (isUserSignedIn) {
 // Solution 2 ? créer une copie async de getUserName() pour utiliser seulement dans cette situation
 
 // A faire : 
-// - afficher invite de connexion si pas connecté et après déconnexion
-// - styliser boutons de connexions, ajouter email + mdp
+// - ajouter email + mdp
 // - corriger messages d'erreur
+// - bug: affiche toujours le message vide après connexion

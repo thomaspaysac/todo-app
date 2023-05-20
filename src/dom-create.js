@@ -251,7 +251,7 @@ const loadHomePage = () => {
     content_container.appendChild(welcome_container);
   const welcome_title = document.createElement('div');
     welcome_title.classList.add('welcome-message__title');
-    welcome_title.textContent = 'Welcome!';
+    welcome_title.textContent = 'Welcome back!';
     welcome_container.appendChild(welcome_title);
   const welcome_message = document.createElement('div');
     welcome_message.classList.add('welcome-message');
@@ -291,6 +291,7 @@ const loadUserGuide = () => {
 };
 
 const loadEmptyMessage = () => {
+  content_container.textContent = '';
   const empty_message = document.createElement('div');
   empty_message.style.display = 'flex';
   empty_message.style.flexDirection = 'column';
@@ -300,4 +301,20 @@ const loadEmptyMessage = () => {
   content_container.appendChild(empty_message);
 };
 
-export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage };
+const loadLoginPage = () => {
+  content_container.textContent = '';
+  const loginPage = document.createElement('div');
+    loginPage.classList.add('signup-container');
+  const welcome_title = document.createElement('h2');
+    welcome_title.textContent = 'Welcome to ';
+    welcome_title.innerHTML += `<span class="logo">toodoo<span style="color:#d4d0af">.</style></span>`;
+    loginPage.appendChild(welcome_title);
+  const signup_invite = document.createElement('div');
+    signup_invite.classList.add('tagline');
+    signup_invite.textContent = 'Please login to continue.'
+    loginPage.appendChild(signup_invite);
+  content_container.appendChild(loginPage);
+
+}
+
+export { resetContentContainer, createTasklistContainer, loadTasklistDetails, loadFiltersDetails, loadHomePage, loadUserGuide, loadEmptyMessage, loadLoginPage };
