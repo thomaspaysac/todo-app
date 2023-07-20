@@ -508,7 +508,7 @@ const loadLocalStorage = () => {
   displayController();
 };
 
-loadLocalStorage();
+//loadLocalStorage();
 
 /*const loadCloudStorage = () => {
   loadFromDB().then(function(result) {
