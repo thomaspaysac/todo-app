@@ -546,19 +546,12 @@ function authStateObserver(user) {
     // Get the signed-in user's profile pic and name.
     setTimeout(() => {
       updateTasklistsContainer();
+      loadHomePage();
     }, '1000')
     NEW_TASK_BUTTON.removeAttribute('disabled');
-    const profilePicUrl = getProfilePicUrl();
     const userName = getUserName();
-    updateTasklistsContainer();
-    if (!taskListsContainer.length) {
-      loadEmptyMessage();
-    } else {
-      loadHomePage();
-    }
 
     // Set the user's profile pic and name.
-    //userPicElement.style.backgroundImage = 'url(' + addSizeToGoogleProfilePic(profilePicUrl) + ')';
     userNameElement.textContent = userName;
 
     // Show user's profile and sign-out button.
@@ -645,10 +638,10 @@ function clearTaskListOnUserChange () {
 
 
 // Test purpose
-const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
+/*const TEST_BUTTON = document.getElementById('superbutton'); // test purpose
 TEST_BUTTON.addEventListener('click', () => {
-  console.log(getAuth().currentUser.uid);
-});
+  console.log(taskListsContainer);
+});*/
 
 clearTaskListOnUserChange();
 
@@ -660,5 +653,3 @@ clearTaskListOnUserChange();
 
 // A faire : 
 // - ajouter email + mdp
-// - corriger messages d'erreur
-// - bug: affiche toujours le message vide après connexion

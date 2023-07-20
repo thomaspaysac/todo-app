@@ -311,7 +311,7 @@ const loadLoginPage = () => {
     loginPage.appendChild(welcome_title);
   const signup_invite = document.createElement('div');
     signup_invite.classList.add('tagline');
-    signup_invite.textContent = 'Please login to continue.'
+    signup_invite.innerHTML = 'Please login to continue.'
     loginPage.appendChild(signup_invite);
   content_container.appendChild(loginPage);
 
