@@ -6,19 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "push": "git subtree push --prefix dist origin gh-pages"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stagnant-sys/todo-app.git"
+    "url": "git+https://github.com/thomaspaysac/todo-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/stagnant-sys/todo-app/issues"
+    "url": "https://github.com/thomaspaysac/todo-app/issues"
   },
-  "homepage": "https://github.com/stagnant-sys/todo-app#readme",
+  "homepage": "https://github.com/thomaspaysac/todo-app#readme",
   "devDependencies": {
     "css-loader": "^6.7.3",
     "style-loader": "^3.3.1",
