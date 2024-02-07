@@ -23,11 +23,11 @@ footer {
   justify-content: center;
   align-items: center;
   gap: 8px; }
-  footer a {
-    text-decoration: none;
-    color: #efefef; }
-    footer a:hover {
-      text-decoration: underline; }
+  footer a img {
+    height: 20px;
+    transition: transform 500ms ease-in-out; }
+    footer a img:hover {
+      transform: rotateZ(360deg); }
 
 .note {
   font-style: italic; }

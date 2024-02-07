@@ -34,22 +34,16 @@ footer {
   gap: 8px;
 
   a {
-    text-decoration: none;
-    color: map-get($colors, main-white);
-
-    &:hover {
-      text-decoration: underline;
+    img {
+      height: 20px;
+      transition: transform 500ms ease-in-out;
+  
+      &:hover {
+        transform: rotateZ(360deg);
+      }
     }
   }
 
-  img {
-    height: 32px;
-    transition: transform 500ms ease-in-out;
-
-    &:hover {
-      transform: rotateZ(360deg);
-    }
-  }
 }
 
 .note {
