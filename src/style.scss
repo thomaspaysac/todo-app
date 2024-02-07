@@ -41,6 +41,15 @@ footer {
       text-decoration: underline;
     }
   }
+
+  img {
+    height: 32px;
+    transition: transform 500ms ease-in-out;
+
+    &:hover {
+      transform: rotateZ(360deg);
+    }
+  }
 }
 
 .note {
