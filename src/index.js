@@ -618,16 +618,18 @@ async function loadFromDB() {
   }
 }
 
-function updateTasklistsContainer () {
+async function updateTasklistsContainer () {
   if (!isUserSignedIn) {
     taskListsContainer = [];
   }
   taskListsContainer = [];
-  loadFromDB().then(function(result) {
+  const res = await loadFromDB();
+  console.log(res);
+  /*loadFromDB().then(function(result) {
     taskListsContainer = JSON.parse(result);
     createTasklistContainer(taskListsContainer);
     displayController();
-  });
+  });*/
 }
 
 function clearTaskListOnUserChange () {
