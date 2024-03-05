@@ -614,7 +614,8 @@ async function loadFromDB() {
     LOADING_SCREEN.style.display = 'none';
     return userData.tasklists;
   } else {
-    console.log("No such document!");
+    LOADING_SCREEN.style.display = 'none';
+    return null;
   }
 }
 
@@ -624,7 +625,13 @@ async function updateTasklistsContainer () {
   }
   taskListsContainer = [];
   const res = await loadFromDB();
-  console.log(res);
+  if (res === null) {
+    taskListsContainer = [];
+  } else {
+    taskListsContainer = JSON.parse(res);
+  }
+  createTasklistContainer(taskListsContainer);
+  displayController();
   /*loadFromDB().then(function(result) {
     taskListsContainer = JSON.parse(result);
     createTasklistContainer(taskListsContainer);
