@@ -632,11 +632,6 @@ async function updateTasklistsContainer () {
   }
   createTasklistContainer(taskListsContainer);
   displayController();
-  /*loadFromDB().then(function(result) {
-    taskListsContainer = JSON.parse(result);
-    createTasklistContainer(taskListsContainer);
-    displayController();
-  });*/
 }
 
 function clearTaskListOnUserChange () {
